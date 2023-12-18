@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Sign Up!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-image: url('./templates/images/img1.jpg');
+    }
+
+    .container {
+      width: 450px;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 35%;
+      margin-top: 170px;
+    }
+
+    .container .sub-con{
+      padding: 30px;
+      border-radius: 10px;
+      background-color: rgba(128, 128, 128, 0.3);
+
+    }
+
+    .container .sub-con .new-account {
+      padding-bottom: 15px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 1px solid #fff;
+    }
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      border: 0px solid #90EE90;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sub-con">
+  <h1>Sign up</h1>
+  <form action="{% url 'registerApp:register' %}" method="post">
+    {% csrf_token %}
+    <label for="username">User Name:</label>
+    <input type="text" name="username" placeholder="Enter username" required="True">
+  
+    <label for="fname">First Name:</label>
+    <input type="text" name="fname" placeholder="Enter First Name" required="True">
+  
+    <label for="lname">Last Name:</label>
+    <input type="text" name="lname" placeholder="Enter Last Name" required="True">
+  
+    <label for="email">Email id:</label>
+    <input type="email" name="email" placeholder="Enter Email Id" required="True">
+  
+    <label for="pass1">Password:</label>
+    <input type="password" name="pass1" placeholder="Enter Password" required="True">
+  
+    <input type="submit" value="Submit!">
+  </form>
+  
+  {% if messages %}
+    {% for message in messages %}
+      {% if 'successfully' in message.tags %}
+        <p style="color: green;">{{ message }}</p>
+      {% else %}
+        <p style="color: red;">{{ message }}</p>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  </div>
+</div>
+</body>
+</html>

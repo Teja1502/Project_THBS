@@ -1,0 +1,34 @@
+<!-- books/templates/books/favourites.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>favourites</title>
+</head>
+<body>
+    <h1>favourites</h1>
+
+    {% if books %}
+        <ul>
+            {% for book in books %}
+                <li>
+                    <h3>{{ book.title }}</h3>
+                    <p>Authors: {{ book.authors }}</p>
+                    {% if book.thumbnail %}
+                        <img src="{{ book.thumbnail }}" alt="Book Thumbnail">
+                    {% endif %}
+                    <p>{{ book.description }}</p>
+
+                    <form method="post" action="{% url 'registerApp:remove_from_favourites' book.title %}">
+                        {% csrf_token %}
+                        <button type="submit">Remove from Favourites</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books in the favourites.</p>
+    {% endif %}
+</body>
+</html>

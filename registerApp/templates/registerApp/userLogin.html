@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Sign Up!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0px;
+    }
+
+    .container {
+      width: 350px;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 35%;
+      margin-top: 170px;
+    }
+
+    .container .sub-con{
+      padding: 30px;
+      border-radius: 10px;
+      background-color: rgba(128, 128, 128, 0.3);
+    }
+
+    .container .sub-con .new-account {
+      padding-bottom: 15px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    h1 {
+      text-align: center;
+    }
+    p {
+      color: #333;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 1px solid #fff;
+    }
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sub-con">
+    <h1>Login</h1>
+
+      <form action="{% url 'registerApp:login' %}" method="post">
+        {% csrf_token %}
+        <label for="username">User Name:</label>
+        <input type="text" name="username" placeholder="Enter username" required="True">
+
+        <label for="pass1">Password:</label>
+        <input type="password" name="pass1" placeholder="Enter password" required="True">
+
+        <div class="new-account">
+          <a href="{% url 'registerApp:register' %}">Create Account</a>
+        </div>
+        <input type="submit" value="Submit!">
+      </form>
+
+      {% if messages %}
+        {% for message in messages %}
+          {% if 'successfully' in message.tags %}
+            <p style="color: green;">{{ message }}</p>
+          {% else %}
+            <p style="color: red;">{{ message }}</p>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
