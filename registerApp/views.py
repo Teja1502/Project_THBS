@@ -4,10 +4,12 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import JsonResponse
+from .forms import UserProfileForm
 import requests
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-from .models import Readlist, Favourites
+from .models import Readlist, Favourites, UserProfile
+from django.db import transaction 
 import json
 import re
 
@@ -51,6 +53,8 @@ def register(request):
             myUser.last_name = lname
             myUser.email = email
             myUser.save()
+
+            UserProfile.objects.create(user=myUser, username=username, first_name=fname, last_name=lname, email=email)
 
             signup_success_message = "You have been registered successfully. Please login."
             request.session['signup_success_message'] = signup_success_message
@@ -136,7 +140,7 @@ def add_to_favourites(request, title):
         }
 
         Favourites.objects.get_or_create(user=user, book=book)
-
+    
     return redirect('registerApp:favourites')
 
 
@@ -177,12 +181,60 @@ def remove_from_favourites(request, title):
 
     return redirect('registerApp:favourites')
 
+@login_required
+def profile(request):
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+    return render(request, 'registerApp/profile.html', {'user_profile': user_profile})
+
+@login_required
+def profile_update(request):
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            with transaction.atomic():
+                form.save()
+
+            # Assuming you have a UserProfile model with a OneToOneField to User
+            # user_profile.user.profile_picture = request.POST['profile_picture']
+            user_profile.user.username = request.POST['username']
+            user_profile.user.first_name = request.POST['first_name']
+            user_profile.user.last_name = request.POST['last_name']
+            user_profile.user.email = request.POST['email']
+            user_profile.user.save()
+
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('registerApp:profile')
+        else:
+            print(form.errors)  # Print form errors to the console
+    else:
+        form = UserProfileForm(instance=user_profile)
+
+    return render(request, 'registerApp/profile_update.html', {'form': form})
 
 # @login_required
-# def profile(request):
-#     user_profile = request.user.userprofile
-#     return render(request, 'registerApp/profile.html', {'user_profile': user_profile})
+# def profile_update(request):
+#     user_profile = get_object_or_404(UserProfile, user=request.user)
 
+#     if request.method == 'POST':
+#         try:
+#             profile_picture = request.FILES['profile_picture']
+#             form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+#         except MultiValueDictKeyError:
+#             # Handle the case where 'profile_picture' is not in request.FILES
+#             form = UserProfileForm(request.POST, instance=user_profile)
+#         if form.is_valid():
+#             with transaction.atomic():
+#                 form.save()
+#             messages.success(request, 'Profile updated successfully.')
+#             return redirect('registerApp:profile')
+#         else:
+#             print(form.errors)  # Print form errors to the console
+#     else:
+#         form = UserProfileForm(instance=user_profile)
+
+#     return render(request, 'registerApp/profile_update.html', {'form': form})
 
 
 

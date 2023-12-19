@@ -14,4 +14,6 @@ urlpatterns = [
     path('favourites/', views.favourites, name='favourites'),
     path('remove_from_readlist/<str:title>/', views.remove_from_readlist, name='remove_from_readlist'),
     path('remove_from_favourites/<str:title>/', views.remove_from_favourites, name='remove_from_favourites'),
+    path('profile/', views.profile, name='profile'),
+    path('profile/update/', views.profile_update, name='profile_update'),
 ]

@@ -1,0 +1,49 @@
+<!-- templates/registerApp/profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 400px;
+            background-color: rgba(128, 128, 128, 0.3);
+            margin-left: 38%;
+            margin-top: 200px;
+            border-radius: 10px;
+        }
+
+        .container .sub-container {
+            padding: 35px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="sub-container">
+            <div class="profile">
+                <h1>User Profile</h1>
+                
+                <p>Username: {{ user_profile.user.username }}</p>
+                <p>First Name: {{ user_profile.user.first_name }}</p>
+                <p>Last Name: {{ user_profile.user.last_name }}</p>
+                <p>Email: {{ user_profile.user.email }}</p>
+            </div>
+
+
+            <form method="post" action="{% url 'registerApp:profile_update' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <button type="submit"><a href="{% url 'registerApp:profile_update' %}">Update Profile</a></button>
+            </form>
+            
+        </div>
+    </div>
+    
+
+</body>
+</html>
