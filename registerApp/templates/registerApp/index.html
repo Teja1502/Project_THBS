@@ -1,0 +1,413 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Books - Find books from Google Play Books</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'registerApp/css/index.css' %}">
+  </head>
+
+  <body>
+
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">Bookstore</a>
+      </div>
+      <div class="nav-links">
+        <a href="{% url 'registerApp:index' %}">Home</a>
+        <a href="{% url 'registerApp:readlist' %}">Readlist</a>
+        <a href="{% url 'registerApp:favourites' %}">Favourites</a>
+        <a href="{% url 'registerApp:profile' %}">Profile</a>
+        <a href="{% url 'registerApp:logout' %}">Logout</a>
+      </div>
+    </nav>
+
+    <aside>
+
+      <nav>
+        <ul>
+          <li class="subhead">CATEGORIES</li>
+          <li>
+            <a class="nav scrolltoview" href="#fiction"
+              ><span class="icon">👽</span>Fiction</a
+            >
+          </li>
+          <li>
+            <a class="nav scrolltoview" href="#poetry"
+              ><span class="icon">🌈</span>Poetry</a
+            >
+          </li>
+          <li>
+            <a class="nav scrolltoview" href="#fantasy"
+              ><span class="icon">🌺</span>Fantasy</a
+            >
+          </li>
+          <li class="nav trigger"><span class="icon">✨</span>More</li>
+        </ul>
+      </nav>
+      <div class="spacer"></div>
+      
+    </aside>
+    <main id="main" class="main">
+      <article>
+        <section id="search" class="results">
+          <div class="flex">
+            <input
+              id="search-box"
+              class="search-box"
+              placeholder="Search books by name, author, genre and etc ..."
+              aria-label="Search books"
+            />
+          </div>
+          <div class="list-book search">
+            <div class="prompt">Enter a search term</div>
+          </div>
+        </section>
+        <section id="fiction" class="results">
+          <div class="flex">
+            <h1 class="section-title">Fiction</h1>
+            <div>
+              <button
+                id="fiction-prev"
+                class="pagination prev"
+                onclick="prev('fiction')"
+              >
+                ◀
+              </button>
+              <button
+                id="fiction-next"
+                class="pagination next"
+                onclick="next('fiction')"
+              >
+                ▶
+              </button>
+            </div>
+          </div>
+          <div class="list-book fiction">
+            <div class="prompt">
+              <div class="loader"></div>
+            </div>
+          </div>
+        </section>
+        <section id="poetry" class="results">
+          <div class="flex">
+            <h1 class="section-title">Poetry</h1>
+            <div>
+              <button
+                id="poetry-prev"
+                class="pagination prev"
+                onclick="prev('poetry')"
+              >
+                ◀
+              </button>
+              <button
+                id="poetry-next"
+                class="pagination next"
+                onclick="next('poetry')"
+              >
+                ▶
+              </button>
+            </div>
+          </div>
+          <div class="list-book poetry">
+            <div class="prompt">
+              <div class="loader"></div>
+            </div>
+          </div>
+        </section>
+        <section id="fantasy" class="results">
+          <div class="flex">
+            <h1 class="section-title">Fantasy</h1>
+            <div>
+              <button
+                id="fantasy-prev"
+                class="pagination prev"
+                onclick="prev('fantasy')"
+              >
+                ◀
+              </button>
+              <button
+                id="fantasy-next"
+                class="pagination next"
+                onclick="next('fantasy')"
+              >
+                ▶
+              </button>
+            </div>
+          </div>
+          <div class="list-book fantasy">
+            <div class="prompt">
+              <div class="loader"></div>
+            </div>
+          </div>
+        </section>
+        <footer id="footer" class="footer">
+        </footer>
+      </article>
+      <div class="modal">
+        <span class="close-button">✖</span>
+        <div class="modal-content">
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Adult
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Anthologies
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Art
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Audiobooks
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Biographies
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Body
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Business
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Children
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Comics
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Contemporary
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Cooking
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Crime
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Engineering
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Entertainment
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Fantasy
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Fiction
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Food
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            General
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Health
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            History
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Horror
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Investing
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Literary
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Literature
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Manga
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Media-help
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Memoirs
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Mind
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Mystery
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Nonfiction
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Religion
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Religion
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Romance
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Science
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Self
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Spirituality
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Sports
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Superheroes
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Technology
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Thrillers
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Travel
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Women
+          </h3>
+          <h3
+            class="book-authors"
+            onclick='updateFilter(this,"subject");toggleModal();'
+          >
+            Young
+          </h3>
+        </div>
+      </div>
+    </main>
+    <script src="{% static 'registerApp/js/index.js' %}"></script>
+  </body>
+</html>

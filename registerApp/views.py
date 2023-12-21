@@ -24,7 +24,7 @@ def userLogin(request):
 
         if myUser is not None:
             login(request, myUser)
-            return redirect('registerApp:book_search')
+            return redirect('registerApp:index')
         else:
             messages.error(request, "Invalid username or password. Please try again.")
             return render(request, 'registerApp/userLogin.html')
@@ -69,45 +69,45 @@ def userLogout(request):
 
 
 
-def book_search(request):
-    if request.method == 'POST':
-        search_query = request.POST.get('search_query')
+# def book_search(request):
+#     if request.method == 'POST':
+#         search_query = request.POST.get('search_query')
 
         
-        max_results = 25
+#         max_results = 25
 
         
-        api_key = 'AIzaSyBUBwEh8IFXh26H6Naballr5wEf7ujCckg'
-        url = f'https://www.googleapis.com/books/v1/volumes?q={search_query}&maxResults={max_results}&key={api_key}'
-        response = requests.get(url)
-        data = response.json()
+#         api_key = 'AIzaSyBUBwEh8IFXh26H6Naballr5wEf7ujCckg'
+#         url = f'https://www.googleapis.com/books/v1/volumes?q={search_query}&maxResults={max_results}&key={api_key}'
+#         response = requests.get(url)
+#         data = response.json()
 
        
-        books = []
-        if 'items' in data:
-            for item in data['items']:
-                book_info = item['volumeInfo']
-                title = book_info.get('title', 'N/A')
-                authors = ', '.join(book_info.get('authors', ['Unknown']))
-                description = book_info.get('description', 'No description available')
-                thumbnail = book_info['imageLinks']['thumbnail'] if 'imageLinks' in book_info else None
+#         books = []
+#         if 'items' in data:
+#             for item in data['items']:
+#                 book_info = item['volumeInfo']
+#                 title = book_info.get('title', 'N/A')
+#                 authors = ', '.join(book_info.get('authors', ['Unknown']))
+#                 description = book_info.get('description', 'No description available')
+#                 thumbnail = book_info['imageLinks']['thumbnail'] if 'imageLinks' in book_info else None
 
-                if re.match("^[a-zA-Z0-9 _-]*$", title):
-                    authors = ', '.join(book_info.get('authors', ['Unknown']))
-                    description = book_info.get('description', 'No description available')
-                    thumbnail = book_info['imageLinks']['thumbnail'] if 'imageLinks' in book_info else None
+#                 if re.match("^[a-zA-Z0-9 _-]*$", title):
+#                     authors = ', '.join(book_info.get('authors', ['Unknown']))
+#                     description = book_info.get('description', 'No description available')
+#                     thumbnail = book_info['imageLinks']['thumbnail'] if 'imageLinks' in book_info else None
 
-                    books.append({
-                        'title': title,
-                        'authors': authors,
-                        'description': description,
-                        'thumbnail': thumbnail,
+#                     books.append({
+#                         'title': title,
+#                         'authors': authors,
+#                         'description': description,
+#                         'thumbnail': thumbnail,
                         
-                    })
+#                     })
 
-        return render(request, 'registerApp/book_search.html', {'books': books, 'search_query': search_query})
+#         return render(request, 'registerApp/book_search.html', {'books': books, 'search_query': search_query})
 
-    return render(request, 'registerApp/book_search.html')
+#     return render(request, 'registerApp/book_search.html')
 
 
 
@@ -236,8 +236,9 @@ def profile_update(request):
 
 #     return render(request, 'registerApp/profile_update.html', {'form': form})
 
-
-
+@login_required
+def index(request):
+    return render(request, 'registerApp/index.html')
 
 
 

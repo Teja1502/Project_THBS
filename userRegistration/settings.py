@@ -122,11 +122,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
-
-# Additional locations of static files for the app
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'registerApp', 'static'),
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'registerApp/static')]
 
 
 # Default primary key field type
