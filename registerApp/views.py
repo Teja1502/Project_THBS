@@ -9,6 +9,8 @@ import requests
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .models import Readlist, Favourites, UserProfile
+# from .forms import ReadlistForm, FavouritesForm
+from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction 
 import json
 import re
@@ -114,34 +116,90 @@ def userLogout(request):
 
 
 @login_required
+@csrf_exempt  # This decorator is used to exempt CSRF protection for this view (use with caution)
 def add_to_readlist(request, title):
     if request.method == 'POST':
         user = request.user
-        book = {
-            'title': title,
-            'authors': request.POST.get('authors'),
-            'description': request.POST.get('description'),
-            'thumbnail': request.POST.get('thumbnail'),
-        }
+        try:
+            data = json.loads(request.body)
+            authors = data.get('authors', '')
+            previewLink = data.get('previewLink', '')
+            thumbnail = data.get('thumbnail', '')
+            book = {
+                'title': title,
+                'authors': authors,
+                'previewLink': previewLink,
+                'thumbnail': thumbnail,
+            }
 
-        Readlist.objects.get_or_create(user=user, book=book)
+            Readlist.objects.get_or_create(user=user, book=book)
 
-    return redirect('registerApp:readlist')
+            return JsonResponse({'message': 'Book added to Readlist successfully'})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
+@csrf_exempt  # This decorator is used to exempt CSRF protection for this view (use with caution)
 def add_to_favourites(request, title):
     if request.method == 'POST':
         user = request.user
-        book = {
-            'title': title,
-            'authors': request.POST.get('authors'),
-            'description': request.POST.get('description'),
-            'thumbnail': request.POST.get('thumbnail'),
-        }
+        try:
+            data = json.loads(request.body)
+            authors = data.get('authors', '')
+            previewLink = data.get('previewLink', '')
+            thumbnail = data.get('thumbnail', '')
+            book = {
+                'title': title,
+                'authors': authors,
+                'previewLink': previewLink,
+                'thumbnail': thumbnail,
+            }
 
-        Favourites.objects.get_or_create(user=user, book=book)
-    
-    return redirect('registerApp:favourites')
+            Favourites.objects.get_or_create(user=user, book=book)
+
+            return JsonResponse({'message': 'Book added to Favourites successfully'})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+# @login_required
+# def add_to_readlist(request):
+#     if request.method == 'POST':
+#         form = ReadlistForm(request.POST)
+#         if form.is_valid():
+#             user = request.user
+#             book_data = {
+#                 'title': form.cleaned_data['title'],
+#                 'authors': form.cleaned_data['authors'],
+#                 'description': form.cleaned_data['description'],
+#                 'thumbnail': form.cleaned_data['thumbnail'],
+#             }
+#             Readlist.objects.get_or_create(user=user, book=book_data)
+#             return JsonResponse({'message': 'Book added to Readlist successfully'})
+#         else:
+#             return JsonResponse({'success': False, 'errors': form.errors})
+#     return JsonResponse({'success': False, 'errors': 'Invalid request method'})
+
+# @login_required
+# def add_to_favourites(request):
+#     if request.method == 'POST':
+#         form = FavouritesForm(request.POST)
+#         if form.is_valid():
+#             user = request.user
+#             book_data = {
+#                 'title': form.cleaned_data['title'],
+#                 'authors': form.cleaned_data['authors'],
+#                 'description': form.cleaned_data['description'],
+#                 'thumbnail': form.cleaned_data['thumbnail'],
+#             }
+#             Favourites.objects.get_or_create(user=user, book=book_data)
+#             return JsonResponse({'message': 'Book added to Favourites successfully'})
+#         else:
+#             return JsonResponse({'success': False, 'errors': form.errors})
+#     return JsonResponse({'success': False, 'errors': 'Invalid request method'})
 
 
 @login_required
@@ -239,6 +297,9 @@ def profile_update(request):
 @login_required
 def index(request):
     return render(request, 'registerApp/index.html')
+
+
+
 
 
 

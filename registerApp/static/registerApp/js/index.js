@@ -44,22 +44,10 @@ const drawChartBook = async (subject, startIndex = 0) => {
           (volumeInfo.categories === undefined
             ? "Others"
             : volumeInfo.categories) +
-          `   </div>
-                  <form method="post" action="{% url 'registerApp:add_to_readlist' book.title %}">
-                  
-                  <input type="hidden" name="authors" value="{{ book.authors }}">
-                  <input type="hidden" name="description" value="{{ book.description }}">
-                  <input type="hidden" name="thumbnail" value="{{ book.thumbnail }}">
-                  <button type="submit" name="action" value="readlist">Readlist</button>
-              </form>
-              <form method="post" action="{% url 'registerApp:add_to_favourites' book.title %}">
-                  <input type="hidden" name="authors" value="{{ book.authors }}">
-                  <input type="hidden" name="description" value="{{ book.description }}">
-                  <input type="hidden" name="thumbnail" value="{{ book.thumbnail }}">
-                  <button type="submit" name="action" value="favourites">Favourites</button>
-              </form>
-            </div>
-          </div>`
+            `</div></div><div class='actions'>
+              <button onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
+              <button onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
+          </div></div>`
       )
       .join("");
   }
@@ -89,7 +77,10 @@ const drawListBook = async () => {
             (volumeInfo.categories === undefined
               ? "Others"
               : volumeInfo.categories) +
-            `</div></div></div>`
+              `</div></div><div class='actions'>
+                <button onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
+                <button onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
+            </div></div>`
         )
         .join("");
     }
@@ -97,6 +88,66 @@ const drawListBook = async () => {
     bookContainer.style.display = "none";
   }
 };
+
+
+const addToReadlist = async (title, authors, previewLink, thumbnail) => {
+
+  try {
+    const response = await fetch(`/add_to_readlist/${title}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        authors,
+        previewLink,
+        thumbnail,
+      }),
+    });
+    const data = await response.json();
+    alert(data.message); // Display a message to the user (you can customize this)
+  } catch (error) {
+    console.error('Error adding to Readlist:', error);
+  }
+};
+
+const addToFavourites = async (title, authors, previewLink, thumbnail) => {
+
+  try {
+    const response = await fetch(`/add_to_favourites/${title}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        authors,
+        previewLink,
+        thumbnail,
+      }),
+    });
+    const data = await response.json();
+    alert(data.message); // Display a message to the user (you can customize this)
+  } catch (error) {
+    console.error('Error adding to Favourites:', error);
+  }
+};
+
+// ... (existing code)
+
+// Example usage in your existing code where you handle button clicks
+const handleReadlistButtonClick = (title, authors, previewLink, thumbnail) => {
+  addToReadlist(title, authors, previewLink, thumbnail);
+};
+
+const handleFavouritesButtonClick = (title, authors, previewLink, thumbnail) => {
+  addToFavourites(title, authors, previewLink, thumbnail);
+};
+
+
+
+
+
+
 const updateFilter = ({ innerHTML }, f) => {
   document.getElementById("main").scrollIntoView({
     behavior: "smooth",
@@ -244,3 +295,5 @@ window.addEventListener("appinstalled", (evt) => {
   pwaInstalled = true;
   document.getElementById("installPWA").style.display = "none";
 });
+
+
