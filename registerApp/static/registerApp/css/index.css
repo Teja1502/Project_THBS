@@ -475,6 +475,7 @@
   .search,
   .prev {
     display: none;
+    margin-top: 100px;
   }
   
   .trigger {

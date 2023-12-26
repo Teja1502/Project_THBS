@@ -17,4 +17,5 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/update/', views.profile_update, name='profile_update'),
     path('index/', views.index, name='index'),
+    path('book/<str:isbn>/', views.book_detail, name='book_detail'),
 ]

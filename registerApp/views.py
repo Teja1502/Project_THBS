@@ -298,6 +298,10 @@ def profile_update(request):
 def index(request):
     return render(request, 'registerApp/index.html')
 
+@login_required
+def book_detail(request, isbn):
+    return render(request, 'bookstore/book.html', {'isbn': isbn})
+
 
 
 

@@ -5,25 +5,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Readlist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: #ffff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100; /* Ensure the navbar is above other content */
+          }
+          
+          .navbar a {
+            text-decoration: none;
+            color: #333;
+            margin: 0 15px;
+            font-weight: 600;
+          }
+          
+          .navbar a:hover {
+            color: #007bff;
+          }
+
+          .logo {
+            padding: 0 32px;
+            font-weight: 900;
+            font-size: 24px;
+          }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        li {
+            background: linear-gradient(#3498db, rgba(0, 0, 0, 0));
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 500px;
+            height: 300px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        li .container img {
+            height: 200px;
+        }
+
+        li .sub-con {
+            padding-left: 80px;
+            padding-top: 200px;
+        }
+
+        h3 {
+            color: #fff;
+            margin: 0 0 10px;
+        }
+
+        p {
+            color: #ecf0f1;
+            margin: 0 0 5px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'registerApp:index' %}">BookStore</a>
+        </div>
+        <div class="nav-links">
+          <a href="{% url 'registerApp:index' %}">Home</a>
+          <a href="{% url 'registerApp:favourites' %}">Favourites</a>
+          <a href="{% url 'registerApp:profile' %}">Profile</a>
+          <a href="{% url 'registerApp:logout' %}">Logout</a>
+        </div>
+      </nav>
     <h1>Readlist</h1>
 
     {% if books %}
-    <ul>
-        {% for book in books %}
-            <li>
-                <div class='book' style='background: linear-gradient(#000, rgba(0, 0, 0, 0));'>
-                    <a href='#' target='_blank'><img class='thumbnail' src='{{ book.thumbnail }}' alt='cover'></a>
-                    <div class='book-info'>
-                        <h3 class='book-title'><a href='#' target='_blank'>{{ book.title }}</a></h3>
-                        <div class='book-authors'>{{ book.authors }}</div>
-                        <div class='info'>{{ book.description }}</div>
+        <ul>
+            {% for book in books %}
+                <li>
+
+                    <div class="container">
+                        <h3>{{ book.title }}</h3>
+                        <p>Author: {{ book.authors }}</p>
+                        <a href="{{ book.previewLink }}" target="_blank"><img src="{{ book.thumbnail }}" alt="{{ book.title }} thumbnail"></a>
                     </div>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+                    <div class="sub-con">
+                        <form method="post" action="{% url 'registerApp:remove_from_readlist' book.title %}">
+                            {% csrf_token %}
+                            <button type="submit">Remove from Readlist</button>
+                        </form>
+                    </div>
+                    
+                </li>
+            {% endfor %}
+        </ul>
     {% else %}
         <p>No books in the readlist.</p>
     {% endif %}

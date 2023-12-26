@@ -15,6 +15,82 @@ const extractThumbnail = ({ imageLinks }) => {
   }
   return imageLinks.thumbnail.replace("http://", "https://");
 };
+
+// const drawChartBook = async (subject, startIndex = 0) => {
+//   let cbookContainer = document.querySelector(`.${subject}`);
+//   cbookContainer.innerHTML = `<div class='prompt'><div class="loader"></div></div>`;
+//   const cdata = await getBooks(
+//     `subject:${subject}&startIndex=${startIndex}&maxResults=10`
+//   );
+//   if (cdata.error) {
+//     cbookContainer.innerHTML = `<div class='prompt'>ツ Limit exceeded! Try after some time</div>`;
+//   } else if (cdata.totalItems == 0) {
+//     cbookContainer.innerHTML = `<div class='prompt'>ツ No results, try a different term!</div>`;
+//   } else if (cdata.totalItems == undefined) {
+//     cbookContainer.innerHTML = `<div class='prompt'>ツ Network problem!</div>`;
+//   } else if (!cdata.items || cdata.items.length == 0) {
+//     cbookContainer.innerHTML = `<div class='prompt'>ツ There is no more result!</div>`;
+//   } else {
+//     cbookContainer.innerHTML = cdata.items;
+//     cbookContainer.innerHTML = cdata.items
+//       .map(
+//         ({ volumeInfo }) => 
+//           `<div class='book' style='background: linear-gradient(` +
+//           getRandomColor() +
+//           `, rgba(0, 0, 0, 0));'><a href='${volumeInfo.previewLink}' target='_blank'><img class='thumbnail' src='` +
+//           extractThumbnail(volumeInfo) +
+//           `' alt='cover'></a><div class='book-info'><h3 class='book-title'><a href='${volumeInfo.previewLink}' target='_blank'>${volumeInfo.title}</a></h3><div class='book-authors' onclick='updateFilter(this,"author");'>${volumeInfo.authors}</div><div class='info' onclick='updateFilter(this,"subject");' style='background-color: ` +
+//           getRandomColor() +
+//           `;'>` +
+//           (volumeInfo.categories === undefined
+//             ? "Others"
+//             : volumeInfo.categories) +
+//             `</div></div><div class='actions'>
+//               <button onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
+//               <button onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
+//           </div></div>`
+//       )
+//       .join("");
+//   }
+// };
+// const drawListBook = async () => {
+//   if (searchBooks.value != "") {
+//     bookContainer.style.display = "flex";
+//     bookContainer.innerHTML = `<div class='prompt'><div class="loader"></div></div>`;
+//     const data = await getBooks(`${searchBooks.value}&maxResults=6`);
+//     if (data.error) {
+//       bookContainer.innerHTML = `<div class='prompt'>ツ Limit exceeded! Try after some time</div>`;
+//     } else if (data.totalItems == 0) {
+//       bookContainer.innerHTML = `<div class='prompt'>ツ No results, try a different term!</div>`;
+//     } else if (data.totalItems == undefined) {
+//       bookContainer.innerHTML = `<div class='prompt'>ツ Network problem!</div>`;
+//     } else {
+//       bookContainer.innerHTML = data.items
+//         .map(
+//           ({ volumeInfo }) =>
+//             `<div class='book' style='background: linear-gradient(` +
+//             getRandomColor() +
+//             `, rgba(0, 0, 0, 0));'><a href='${volumeInfo.previewLink}' target='_blank'><img class='thumbnail' src='` +
+//             extractThumbnail(volumeInfo) +
+//             `' alt='cover'></a><div class='book-info'><h3 class='book-title'><a href='${volumeInfo.previewLink}' target='_blank'>${volumeInfo.title}</a></h3><div class='book-authors' onclick='updateFilter(this,"author");'>${volumeInfo.authors}</div><div class='info' onclick='updateFilter(this,"subject");' style='background-color: ` +
+//             getRandomColor() +
+//             `;'>` +
+//             (volumeInfo.categories === undefined
+//               ? "Others"
+//               : volumeInfo.categories) +
+//               `</div></div><div class='actions'>
+//                 <button onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
+//                 <button onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
+//             </div></div>`
+//         )
+//         .join("");
+//     }
+//   } else {
+//     bookContainer.style.display = "none";
+//   }
+// };
+
+
 const drawChartBook = async (subject, startIndex = 0) => {
   let cbookContainer = document.querySelector(`.${subject}`);
   cbookContainer.innerHTML = `<div class='prompt'><div class="loader"></div></div>`;
@@ -30,28 +106,24 @@ const drawChartBook = async (subject, startIndex = 0) => {
   } else if (!cdata.items || cdata.items.length == 0) {
     cbookContainer.innerHTML = `<div class='prompt'>ツ There is no more result!</div>`;
   } else {
-    cbookContainer.innerHTML = cdata.items;
     cbookContainer.innerHTML = cdata.items
-      .map(
-        ({ volumeInfo }) =>
-          `<div class='book' style='background: linear-gradient(` +
-          getRandomColor() +
-          `, rgba(0, 0, 0, 0));'><a href='${volumeInfo.previewLink}' target='_blank'><img class='thumbnail' src='` +
-          extractThumbnail(volumeInfo) +
-          `' alt='cover'></a><div class='book-info'><h3 class='book-title'><a href='${volumeInfo.previewLink}' target='_blank'>${volumeInfo.title}</a></h3><div class='book-authors' onclick='updateFilter(this,"author");'>${volumeInfo.authors}</div><div class='info' onclick='updateFilter(this,"subject");' style='background-color: ` +
-          getRandomColor() +
-          `;'>` +
-          (volumeInfo.categories === undefined
-            ? "Others"
-            : volumeInfo.categories) +
-            `</div></div><div class='actions'>
-              <button onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
-              <button onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
-          </div></div>`
-      )
+      .map(({ volumeInfo }) => {
+        const bookISBN = volumeInfo.industryIdentifiers
+          ? volumeInfo.industryIdentifiers[0].identifier
+          : '';
+        return `<div class='book' style='background: linear-gradient(${getRandomColor()}, rgba(0, 0, 0, 0));'>
+                  <a href='book.html?isbn=${bookISBN}' target='_blank'>
+                    <img class='thumbnail' src='${extractThumbnail(volumeInfo)}' alt='cover'>
+                  </a>
+                  <div class='book-info'>
+                    <!-- rest of your book details -->
+                  </div>
+                </div>`;
+      })
       .join("");
   }
 };
+
 const drawListBook = async () => {
   if (searchBooks.value != "") {
     bookContainer.style.display = "flex";
@@ -65,23 +137,19 @@ const drawListBook = async () => {
       bookContainer.innerHTML = `<div class='prompt'>ツ Network problem!</div>`;
     } else {
       bookContainer.innerHTML = data.items
-        .map(
-          ({ volumeInfo }) =>
-            `<div class='book' style='background: linear-gradient(` +
-            getRandomColor() +
-            `, rgba(0, 0, 0, 0));'><a href='${volumeInfo.previewLink}' target='_blank'><img class='thumbnail' src='` +
-            extractThumbnail(volumeInfo) +
-            `' alt='cover'></a><div class='book-info'><h3 class='book-title'><a href='${volumeInfo.previewLink}' target='_blank'>${volumeInfo.title}</a></h3><div class='book-authors' onclick='updateFilter(this,"author");'>${volumeInfo.authors}</div><div class='info' onclick='updateFilter(this,"subject");' style='background-color: ` +
-            getRandomColor() +
-            `;'>` +
-            (volumeInfo.categories === undefined
-              ? "Others"
-              : volumeInfo.categories) +
-              `</div></div><div class='actions'>
-                <button onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
-                <button onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
-            </div></div>`
-        )
+        .map(({ volumeInfo }) => {
+          const bookISBN = volumeInfo.industryIdentifiers
+            ? volumeInfo.industryIdentifiers[0].identifier
+            : '';
+          return `<div class='book' style='background: linear-gradient(${getRandomColor()}, rgba(0, 0, 0, 0));'>
+                    <a href='book.html?isbn=${bookISBN}' target='_blank'>
+                      <img class='thumbnail' src='${extractThumbnail(volumeInfo)}' alt='cover'>
+                    </a>
+                    <div class='book-info'>
+                      <!-- rest of your book details -->
+                    </div>
+                  </div>`;
+        })
         .join("");
     }
   } else {
