@@ -5,16 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Profile</title>
+    <style>
+        .container {
+            display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 100px;
+        }
+
+        .container .sub-con {
+            padding: 60px;
+            background-color: #d3d3d3;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Update Profile</h1>
-    <form method="post" action="{% url 'registerApp:profile_update' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save Changes</button>
-    </form>
-    {% if form.errors %}
-        <p style="color: red;">{{ form.errors }}</p>
-    {% endif %}
+    <div class="container">
+        <div class="sub-con">
+            <h1>Update Profile</h1>
+            <form method="post" action="{% url 'registerApp:profile_update' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Save Changes</button>
+            </form>
+            {% if form.errors %}
+                <p style="color: red;">{{ form.errors }}</p>
+            {% endif %}
+        </div>
+        
+    </div>
+    
 </body>
 </html>

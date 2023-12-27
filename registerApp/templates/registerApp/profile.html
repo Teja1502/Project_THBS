@@ -6,6 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <style>
+
+        body {
+            margin: 0px;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: #ffff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100; /* Ensure the navbar is above other content */
+          }
+          
+          .navbar a {
+            text-decoration: none;
+            color: #333;
+            margin: 0 15px;
+            font-weight: 600;
+          }
+          
+          .navbar a:hover {
+            color: #007bff;
+          }
+
+          .logo {
+            padding: 0 32px;
+            font-weight: 900;
+            font-size: 24px;
+          }
+
         .container {
             display: flex;
             flex-direction: column;
@@ -13,7 +47,7 @@
             max-width: 400px;
             background-color: rgba(128, 128, 128, 0.3);
             margin-left: 38%;
-            margin-top: 200px;
+            margin-top: 150px;
             border-radius: 10px;
         }
 
@@ -23,6 +57,19 @@
     </style>
 </head>
 <body>
+
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'registerApp:index' %}">BookStore</a>
+        </div>
+        <div class="nav-links">
+          <a href="{% url 'registerApp:index' %}">Home</a>
+          <a href="{% url 'registerApp:readlist' %}">Readlist</a>
+          <a href="{% url 'registerApp:favourites' %}">Favourites</a>
+          <a href="{% url 'registerApp:logout' %}">Logout</a>
+        </div>
+      </nav>
 
     <div class="container">
         <div class="sub-container">
