@@ -1,4 +1,4 @@
-<!-- templates/registerApp/profile.html -->
+{% comment %} <!-- templates/registerApp/profile.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,4 +93,182 @@
     
 
 </body>
+</html> {% endcomment %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Input File Upload 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      body {
+        margin: 0px;
+        font-family: sans-serif;
+    }
+    
+    .top-image {
+        width: 100%;
+        height: 30px;
+      }
+    
+    .top-image img {
+        width: 100%;
+        height: 150px;
+    }
+    
+    .upload{
+        width: 100px;
+        position: relative;
+        margin: auto;
+      }
+      
+      .upload img{
+        border-radius: 50%;
+        border: 6px solid #eaeaea;
+        margin-top: 60px;
+      }
+      
+      .upload .round{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #00B4FF;
+        width: 32px;
+        height: 32px;
+        line-height: 33px;
+        text-align: center;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      
+      .upload .round input[type = "file"]{
+        position: absolute;
+        transform: scale(2);
+        opacity: 0;
+      }
+      
+      input[type=file]::-webkit-file-upload-button{
+          cursor: pointer;
+      }
+    
+    
+    .profile-details {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        padding: 30px;
+    }
+    
+    .profile-details label {
+        font-size: 18px;
+        font-weight: bold;
+        color: grey;
+        padding-top: 6px;
+    }
+    
+    
+    .profile-details .user-details {
+        margin-top: 80px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    
+    .profile-details .user-fav {
+        margin-top: 100px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    
+    .profile-details .user-fav .userReadlist {
+        padding-left: 135px;
+        padding: 40px;
+        background-color: #d3d3d3;
+        border-radius: 10px;
+    }
+    
+    .profile-details .user-fav .userFavourites {
+        padding-right: 135px;
+        padding: 40px;
+        background-color: #d3d3d3;
+        border-radius: 10px;
+    }
+    
+    .profile-details .user-fav .userReadlist label {
+        color: green;
+    }
+    
+    .profile-details .user-fav .userFavourites label {
+        color: green;
+    }
+    
+    .profile-details button {
+        width: 150px;
+        height: 40px;
+        border-radius: 40px;
+        border: 0.5px solid grey;
+        margin-top: 50px;
+    }
+    
+    .profile-details .user-fav .updateButton {
+        margin-top: 40px;
+    }
+
+    .profile-details .user-fav .updateButton button {
+      text-decoration: none;
+      color: black;
+    }
+        
+    </style>
+  </head>
+  <body>
+    <div class="top-image">
+        <img src="{% static 'registerApp/images/book_img.png' %}" alt="">
+    </div>
+    <div class="upload">
+      <img src="{% static 'registerApp/images/noprofil.jpg' %}" width = 100 height = 100 alt="">
+      <div class="round">
+        <input type="file">
+        <i class = "fa fa-camera" style = "color: #fff;"></i>
+      </div>
+    </div>
+
+    <div class="profile-details">
+        <label for="userName">{{ user_profile.user.username }}</label>
+        <label for="country">Andhra Pradesh, India</label>
+        <div class="user-details">
+            <div class="fName">
+                <h2>First Name</h2>
+                <label for="firstName">{{ user_profile.user.first_name }}</label>
+            </div>
+            <div class="lName">
+                <h2>Last Name</h2>
+                <label for="lastName">{{ user_profile.user.last_name }}</label>
+            </div>   
+            <div class="email">
+                <h2>Email</h2>
+                <label for="email">{{ user_profile.user.email }}</label>
+            </div> 
+        </div>
+        <div class="user-fav">
+            <div class="userReadlist">
+                <label for="read_count">23</label>
+                <h2>Readlist</h2>
+                
+            </div>   
+            <div class="userFavourites">
+                <label for="fav_count">23</label>
+                <h2>Favourites</h2>
+                
+            </div>
+        </div>
+        <div class="updateButton">
+            <button type="button"><a href="{% url 'registerApp:profile_update' %}">Update Profile</a></button>
+        </div>   
+    </div>
+  </body>
 </html>

@@ -1,5 +1,7 @@
 let bookContainer = document.querySelector(".search");
 let searchBooks = document.getElementById("search-box");
+let read_count = 0;
+let fav_count = 0;
 const getBooks = async (book) => {
   const response = await fetch(
     `https://www.googleapis.com/books/v1/volumes?q=${book}`
@@ -166,8 +168,12 @@ const addToReadlist = async (title, authors, previewLink, thumbnail) => {
         thumbnail,
       }),
     });
+    read_count += 1
     const data = await response.json();
-    alert(data.message); // Display a message to the user (you can customize this)
+    alertMessage = window.alert(data.message); // Display a message to the user (you can customize this)
+    setTimeout(() => {
+      alertMessage.close();
+    }, 1000);
   } catch (error) {
     console.error('Error adding to Readlist:', error);
   }
@@ -187,6 +193,7 @@ const addToFavourites = async (title, authors, previewLink, thumbnail) => {
         thumbnail,
       }),
     });
+    fav_count += 1
     const data = await response.json();
     alert(data.message); // Display a message to the user (you can customize this)
   } catch (error) {
