@@ -45,25 +45,35 @@ def register(request):
         lname = request.POST['lname']
         email = request.POST['email']
         pass1 = request.POST['pass1']
+        pass2 = request.POST['pass2']
+        location = request.POST['location']
 
+                # Check if passwords match
+        if pass1 != pass2:
+            messages.error(request, "Passwords do not match. Please enter matching passwords.")
+            return render(request, 'registerApp/userRegister.html')
+
+        # Check if username already exists
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists. Please choose a different username.")
             return render(request, 'registerApp/userRegister.html')
-        else:
-            myUser = User.objects.create_user(username=username, password=pass1)
-            myUser.first_name = fname
-            myUser.last_name = lname
-            myUser.email = email
-            myUser.save()
+        
+        # Create user and profile
+        myUser = User.objects.create_user(username=username, password=pass1)
+        myUser.first_name = fname
+        myUser.last_name = lname
+        myUser.email = email
+        myUser.location = location
+        myUser.save()
+        UserProfile.objects.create(user=myUser, username=username, first_name=fname, last_name=lname, email=email, location=location)
 
-            UserProfile.objects.create(user=myUser, username=username, first_name=fname, last_name=lname, email=email)
+        signup_success_message = "You have been registered successfully. Please login."
+        request.session['signup_success_message'] = signup_success_message
 
-            signup_success_message = "You have been registered successfully. Please login."
-            request.session['signup_success_message'] = signup_success_message
-
-            return redirect('registerApp:login')
+        return redirect('registerApp:login')
 
     return render(request, 'registerApp/userRegister.html')
+     
 
 def userLogout(request):
     logout(request)
@@ -241,7 +251,7 @@ def remove_from_favourites(request, title):
 
 @login_required
 def profile(request):
-    user_profile = get_object_or_404(UserProfile, user=request.user)
+    user_profile = UserProfile.objects.get(user=request.user)
     return render(request, 'registerApp/profile.html', {'user_profile': user_profile})
 
 @login_required

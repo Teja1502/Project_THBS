@@ -6,92 +6,140 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 0;
+      padding: 0;
       background-image: url('./templates/images/img1.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      height: 120vh;
+      justify-content: center;
     }
-
     .container {
       width: 450px;
-      height: 350px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin-left: 35%;
-      margin-top: 170px;
-    }
-
-    .container .sub-con{
-      padding: 30px;
+      padding: 10px;
       border-radius: 10px;
       background-color: rgba(128, 128, 128, 0.3);
-
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      max-width: 100%; 
     }
 
-    .container .sub-con .new-account {
-      padding-bottom: 15px;
-    }
-
-    h1 {
+    .container h1 {
       text-align: center;
+      color: #000;
     }
-    form {
+
+    .container form {
       max-width: 400px;
       margin: 0 auto;
     }
-    label {
+
+    .container label {
       display: block;
       margin-bottom: 8px;
+      color: #000;
     }
-    input {
+
+    .container input {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin-bottom: 16px;
       box-sizing: border-box;
-      border-radius: 10px;
-      border: 1px solid #fff;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      outline: none;
     }
-    input[type="submit"] {
+
+    .container input[type="submit"] {
       background-color: #4caf50;
       color: white;
       cursor: pointer;
-      border: 0px solid #90EE90;
+      border: none;
+    }
+
+    .container input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    .container a {
+      display: block;
+      text-align: center;
+      color: #333;
+      margin-top: 10px;
+      text-decoration: none;
+    }
+
+    .container a:hover {
+      text-decoration: underline;
+    }
+
+    .message {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .message p {
+      margin: 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .message p.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .message p.error {
+      background-color: #f8d7da;
+      color: #721c24;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="sub-con">
-  <h1>Sign up</h1>
-  <form action="{% url 'registerApp:register' %}" method="post">
-    {% csrf_token %}
-    <label for="username">User Name:</label>
-    <input type="text" name="username" placeholder="Enter username" required="True">
-  
-    <label for="fname">First Name:</label>
-    <input type="text" name="fname" placeholder="Enter First Name" required="True">
-  
-    <label for="lname">Last Name:</label>
-    <input type="text" name="lname" placeholder="Enter Last Name" required="True">
-  
-    <label for="email">Email id:</label>
-    <input type="email" name="email" placeholder="Enter Email Id" required="True">
-  
-    <label for="pass1">Password:</label>
-    <input type="password" name="pass1" placeholder="Enter Password" required="True">
-  
-    <input type="submit" value="Submit!">
-  </form>
-  
-  {% if messages %}
-    {% for message in messages %}
-      {% if 'successfully' in message.tags %}
-        <p style="color: green;">{{ message }}</p>
-      {% else %}
-        <p style="color: red;">{{ message }}</p>
+    <h1>Sign up</h1>
+    <form action="{% url 'registerApp:register' %}" method="post">
+      {% csrf_token %}
+      <label for="username">User Name:</label>
+      <input type="text" name="username" placeholder="Enter username" required="True">
+
+      <label for="fname">First Name:</label>
+      <input type="text" name="fname" placeholder="Enter First Name" required="True">
+
+      <label for="lname">Last Name:</label>
+      <input type="text" name="lname" placeholder="Enter Last Name" required="True">
+
+      <label for="email">Email id:</label>
+      <input type="email" name="email" placeholder="Enter Email Id" required="True">
+
+      <label for="location">Location:</label>
+      <input type="text" name="location" placeholder="Enter a Location" required="True">
+
+      <label for="pass1">Password:</label>
+      <input type="password" name="pass1" placeholder="Enter Password" required="True">
+
+      <label for="pass2">Confirm Password:</label>
+      <input type="password" name="pass2" placeholder="Confirm Password" required="True">
+
+      <a href="{% url 'registerApp:login' %}">Already have an account?</a>
+
+      <input type="submit" value="Submit!">
+    </form>
+
+    <div class="message">
+      {% if messages %}
+        {% for message in messages %}
+          <p class="{{ message.tags }}">
+            {% if 'successfully' in message.tags %}
+              {{ message }}
+            {% else %}
+              {{ message }}
+            {% endif %}
+          </p>
+        {% endfor %}
       {% endif %}
-    {% endfor %}
-  {% endif %}
+    </div>
   </div>
-</div>
 </body>
 </html>

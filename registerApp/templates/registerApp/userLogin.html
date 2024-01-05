@@ -6,56 +6,52 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0px;
+      margin: 0;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
 
     .container {
       width: 350px;
-      height: 350px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      margin-left: 35%;
-      margin-top: 170px;
-    }
-
-    .container .sub-con{
-      padding: 30px;
+      align-items: center;
+      padding: 20px;
       border-radius: 10px;
       background-color: rgba(128, 128, 128, 0.3);
-    }
-
-    .container .sub-con .new-account {
-      padding-bottom: 15px;
-    }
-
-    a {
-      text-decoration: none;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
       text-align: center;
+      color: #000;
     }
-    p {
-      color: #333;
-    }
+
     form {
-      max-width: 400px;
-      margin: 0 auto;
+      max-width: 300px;
+      width: 100%;
+      margin-top: 20px;
     }
+
     label {
       display: block;
       margin-bottom: 8px;
+      color: #000;
     }
 
     input {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin-bottom: 16px;
       box-sizing: border-box;
-      border-radius: 10px;
-      border: 1px solid #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
     }
+
     input[type="submit"] {
       background-color: #4caf50;
       color: white;
@@ -64,37 +60,74 @@
       border: none;
       border-radius: 5px;
     }
+
     input[type="submit"]:hover {
       background-color: #45a049;
+    }
+
+    .new-account {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .new-account a {
+      text-decoration: none;
+      color: #000;
+    }
+
+    .new-account a:hover {
+      text-decoration: underline;
+    }
+
+    .message {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .message p {
+      margin: 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .message p.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .message p.error {
+      background-color: #f8d7da;
+      color: #721c24;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="sub-con">
     <h1>Login</h1>
+    <form action="{% url 'registerApp:login' %}" method="post">
+      {% csrf_token %}
+      <label for="username">User Name:</label>
+      <input type="text" name="username" placeholder="Enter username" required="True">
 
-      <form action="{% url 'registerApp:login' %}" method="post">
-        {% csrf_token %}
-        <label for="username">User Name:</label>
-        <input type="text" name="username" placeholder="Enter username" required="True">
+      <label for="pass1">Password:</label>
+      <input type="password" name="pass1" placeholder="Enter password" required="True">
 
-        <label for="pass1">Password:</label>
-        <input type="password" name="pass1" placeholder="Enter password" required="True">
+      <div class="new-account">
+        <a href="{% url 'registerApp:register' %}">Create Account</a>
+      </div>
+      <input type="submit" value="Submit!">
+    </form>
 
-        <div class="new-account">
-          <a href="{% url 'registerApp:register' %}">Create Account</a>
-        </div>
-        <input type="submit" value="Submit!">
-      </form>
-
+    <div class="message">
       {% if messages %}
         {% for message in messages %}
-          {% if 'successfully' in message.tags %}
-            <p style="color: green;">{{ message }}</p>
-          {% else %}
-            <p style="color: red;">{{ message }}</p>
-          {% endif %}
+          <p class="{{ message.tags }}">
+            {% if 'successfully' in message.tags %}
+              {{ message }}
+            {% else %}
+              {{ message }}
+            {% endif %}
+          </p>
         {% endfor %}
       {% endif %}
     </div>
