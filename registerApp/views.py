@@ -126,7 +126,7 @@ def userLogout(request):
 
 
 @login_required
-@csrf_exempt  # This decorator is used to exempt CSRF protection for this view (use with caution)
+@csrf_exempt  
 def add_to_readlist(request, title):
     if request.method == 'POST':
         user = request.user
@@ -151,7 +151,7 @@ def add_to_readlist(request, title):
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
-@csrf_exempt  # This decorator is used to exempt CSRF protection for this view (use with caution)
+@csrf_exempt  
 def add_to_favourites(request, title):
     if request.method == 'POST':
         user = request.user
@@ -251,8 +251,22 @@ def remove_from_favourites(request, title):
 
 @login_required
 def profile(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    return render(request, 'registerApp/profile.html', {'user_profile': user_profile})
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        user_profile = None  # Handle the case where the profile does not exist
+
+    user_readlist_count = Readlist.objects.filter(user=request.user).count()
+    user_favourites_count = Favourites.objects.filter(user=request.user).count()
+
+    context = {
+        'user_profile': user_profile,
+        'user_readlist_count': user_readlist_count,
+        'user_favourites_count': user_favourites_count,
+    }
+
+    return render(request, 'registerApp/profile.html', context)
+    
 
 @login_required
 def profile_update(request):

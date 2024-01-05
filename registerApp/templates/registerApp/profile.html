@@ -1,100 +1,3 @@
-{% comment %} <!-- templates/registerApp/profile.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <style>
-
-        body {
-            margin: 0px;
-        }
-
-        .navbar {
-            position: sticky;
-            top: 0;
-            background-color: #ffff;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 100; /* Ensure the navbar is above other content */
-          }
-          
-          .navbar a {
-            text-decoration: none;
-            color: #333;
-            margin: 0 15px;
-            font-weight: 600;
-          }
-          
-          .navbar a:hover {
-            color: #007bff;
-          }
-
-          .logo {
-            padding: 0 32px;
-            font-weight: 900;
-            font-size: 24px;
-          }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            max-width: 400px;
-            background-color: rgba(128, 128, 128, 0.3);
-            margin-left: 38%;
-            margin-top: 150px;
-            border-radius: 10px;
-        }
-
-        .container .sub-container {
-            padding: 35px;
-        }
-    </style>
-</head>
-<body>
-
-
-    <nav class="navbar">
-        <div class="logo">
-            <a href="{% url 'registerApp:index' %}">BookStore</a>
-        </div>
-        <div class="nav-links">
-          <a href="{% url 'registerApp:index' %}">Home</a>
-          <a href="{% url 'registerApp:readlist' %}">Readlist</a>
-          <a href="{% url 'registerApp:favourites' %}">Favourites</a>
-          <a href="{% url 'registerApp:logout' %}">Logout</a>
-        </div>
-      </nav>
-
-    <div class="container">
-        <div class="sub-container">
-            <div class="profile">
-                <h1>User Profile</h1>
-                
-                <p>Username: {{ user_profile.user.username }}</p>
-                <p>First Name: {{ user_profile.user.first_name }}</p>
-                <p>Last Name: {{ user_profile.user.last_name }}</p>
-                <p>Email: {{ user_profile.user.email }}</p>
-            </div>
-
-
-            <form method="post" action="{% url 'registerApp:profile_update' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                <button type="submit"><a href="{% url 'registerApp:profile_update' %}">Update Profile</a></button>
-            </form>
-            
-        </div>
-    </div>
-    
-
-</body>
-</html> {% endcomment %}
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -255,17 +158,16 @@
             </div> 
         </div>
         <div class="user-fav">
-            <div class="userReadlist">
-                <label for="read_count">23</label>
-                <h2>Readlist</h2>
-                
-            </div>   
-            <div class="userFavourites">
-                <label for="fav_count">23</label>
-                <h2>Favourites</h2>
-                
-            </div>
-        </div>
+          <div class="userReadlist">
+              <label for="read_count">{{ user_readlist_count }}</label>
+              <h2>Readlist</h2>
+          </div>   
+          <div class="userFavourites">
+              <label for="fav_count">{{ user_favourites_count }}</label>
+              <h2>Favourites</h2>
+          </div>
+
+      </div>
         <div class="updateButton">
             <button type="button"><a href="{% url 'registerApp:profile_update' %}">Update Profile</a></button>
         </div>   
