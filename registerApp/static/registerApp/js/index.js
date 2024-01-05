@@ -95,63 +95,6 @@ const drawListBook = async () => {
 };
 
 
-// const displayMessage = (action, success) => {
-//   const messageContainer = document.createElement('div');
-//   messageContainer.className = success ? 'success-message' : 'error-message';
-//   messageContainer.textContent = success
-//     ? `Added to ${action} successfully`
-//     : `Error adding to ${action}`;
-
-//   document.body.appendChild(messageContainer);
-
-//   setTimeout(() => {
-//     document.body.removeChild(messageContainer);
-//   }, 10000);
-// };
-
-// const addToReadlist = async (title, authors, previewLink, thumbnail) => {
-//   try {
-//     const response = await fetch(`/add_to_readlist/${title}/`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({
-//         authors,
-//         previewLink,
-//         thumbnail,
-//       }),
-//     });
-//     const data = await response.json();
-//     displayMessage('Readlist', true);
-//   } catch (error) {
-//     console.error('Error adding to Readlist:', error);
-//     displayMessage('Readlist', false);
-//   }
-// };
-
-// const addToFavourites = async (title, authors, previewLink, thumbnail) => {
-//   try {
-//     const response = await fetch(`/add_to_favourites/${title}/`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({
-//         authors,
-//         previewLink,
-//         thumbnail,
-//       }),
-//     });
-//     const data = await response.json();
-//     displayMessage('Favourites', true);
-//   } catch (error) {
-//     console.error('Error adding to Favourites:', error);
-//     displayMessage('Favourites', false);
-//   }
-// };
-
-
 
 
 const addToReadlist = async (title, authors, previewLink, thumbnail) => {
@@ -264,36 +207,36 @@ const getRandomColor = () =>
 const toggleSwitch = document.querySelector(
   '.theme-switch input[type="checkbox"]'
 );
-if (localStorage.getItem("marcdownTheme") == "dark") {
-  document.documentElement.setAttribute("data-theme", "dark");
-  document
-    .querySelector("meta[name=theme-color]")
-    .setAttribute("content", "#090b28");
-  toggleSwitch.checked = true;
-  localStorage.setItem("marcdownTheme", "dark");
-} else {
-  document.documentElement.setAttribute("data-theme", "light");
-  document
-    .querySelector("meta[name=theme-color]")
-    .setAttribute("content", "#ffffff");
-  toggleSwitch.checked = false;
-  localStorage.setItem("marcdownTheme", "light");
-}
-const switchTheme = ({ target }) => {
-  if (target.checked) {
-    document.documentElement.setAttribute("data-theme", "dark");
-    document
-      .querySelector("meta[name=theme-color]")
-      .setAttribute("content", "#090b28");
-    localStorage.setItem("marcdownTheme", "dark");
-  } else {
-    document.documentElement.setAttribute("data-theme", "light");
-    document
-      .querySelector("meta[name=theme-color]")
-      .setAttribute("content", "#ffffff");
-    localStorage.setItem("marcdownTheme", "light");
-  }
-};
+// if (localStorage.getItem("marcdownTheme") == "dark") {
+//   document.documentElement.setAttribute("data-theme", "dark");
+//   document
+//     .querySelector("meta[name=theme-color]")
+//     .setAttribute("content", "#090b28");
+//   toggleSwitch.checked = true;
+//   localStorage.setItem("marcdownTheme", "dark");
+// } else {
+//   document.documentElement.setAttribute("data-theme", "light");
+//   document
+//     .querySelector("meta[name=theme-color]")
+//     .setAttribute("content", "#ffffff");
+//   toggleSwitch.checked = false;
+//   localStorage.setItem("marcdownTheme", "light");
+// }
+// const switchTheme = ({ target }) => {
+//   if (target.checked) {
+//     document.documentElement.setAttribute("data-theme", "dark");
+//     document
+//       .querySelector("meta[name=theme-color]")
+//       .setAttribute("content", "#090b28");
+//     localStorage.setItem("marcdownTheme", "dark");
+//   } else {
+//     document.documentElement.setAttribute("data-theme", "light");
+//     document
+//       .querySelector("meta[name=theme-color]")
+//       .setAttribute("content", "#ffffff");
+//     localStorage.setItem("marcdownTheme", "light");
+//   }
+// };
 toggleSwitch.addEventListener("change", switchTheme, false);
 let startIndex = 0;
 const next = (subject) => {
