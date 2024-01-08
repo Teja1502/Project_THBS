@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 app_name = 'registerApp'
 
 urlpatterns = [
@@ -19,3 +20,5 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('book/<str:isbn>/', views.book_detail, name='book_detail'),
 ]
+
+

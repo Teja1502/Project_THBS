@@ -308,4 +308,36 @@ window.addEventListener("appinstalled", (evt) => {
   document.getElementById("installPWA").style.display = "none";
 });
 
+function previewProfilePicture() {
+  var input = document.getElementById('profilePictureInput');
+  var img = document.querySelector('.upload img');
+  var file = input.files[0];
 
+  if (file) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+          img.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+  }
+}
+
+// Attach the event listener to trigger the preview function when the camera icon is clicked
+document.querySelector('.upload .round i').addEventListener('click', function () {
+  document.getElementById('profilePictureInput').click();
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  var backIcon = document.getElementById('backIcon');
+  if (backIcon) {
+      backIcon.addEventListener('click', redirectToIndex);
+  }
+
+  function redirectToIndex() {
+      console.log('Icon clicked!');
+      window.location.href = "{% url 'registerApp:index' %}";
+  }
+});

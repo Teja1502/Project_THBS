@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -134,13 +134,25 @@
     <div class="top-image">
         <img src="{% static 'registerApp/images/book_img.png' %}" alt="">
     </div>
-    <div class="upload">
-      <img src="{% static 'registerApp/images/noprofil.jpg' %}" width = 100 height = 100 alt="">
-      <div class="round">
-        <input type="file">
-        <i class = "fa fa-camera" style = "color: #fff;"></i>
-      </div>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+  
+      <input type="submit" value="Update Profile">
+  </form>
+  
+  <div class="upload">
+    {% if user_profile.profile_picture %}
+        <img src="{{ user_profile.profile_picture.url }}" width="100" height="100" alt="">
+    {% else %}
+        <img src="{% static 'registerApp/images/noprofil.jpg' %}" width="100" height="100" alt="">
+    {% endif %}
+    <div class="round">
+        <input type="file" name="profile_picture">
+        <i class="fa fa-camera" style="color: #fff;"></i>
     </div>
+</div>
+
 
     <div class="profile-details">
         <label for="userName">{{ user_profile.user.username }}</label>
@@ -174,5 +186,236 @@
             <button type="button"><a href="{% url 'registerApp:profile_update' %}">Update Profile</a></button>
         </div>   
     </div>
+    <script src="{% static 'registerApp/js/index.js' %}"></script>
   </body>
+</html> 
+
+
+
+
+
+
+
+ {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ {% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Input File Upload 2</title>
+    <style>
+        body {
+            margin: 0px;
+            font-family: sans-serif;
+        }
+
+        .top-image {
+            width: 100%;
+            height: 30px;
+        }
+
+        .top-image img {
+            width: 100%;
+            height: 150px;
+        }
+
+        .top-image i {
+          color: grey;
+          position: absolute;
+          top: 10px;
+          left: 4px;
+          font-size: 28px;
+        }
+
+        .upload {
+            width: 100px;
+            position: relative;
+            margin: auto;
+        }
+
+        .upload img {
+            border-radius: 50%;
+            border: 0.5px solid rgba(0, 0, 0, 0.5);
+            margin-top: 60px;
+            height: 120px;
+            width: 120px;
+        }
+
+        {% comment %} .upload .round {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #00B4FF;
+            width: 32px;
+            height: 32px;
+            line-height: 33px;
+            text-align: center;
+            border-radius: 50%;
+            overflow: hidden;
+        } {% endcomment %}
+
+        .upload .round input[type="file"] {
+            position: absolute;
+            transform: scale(2);
+            opacity: 0;
+        }
+
+        input[type=file]::-webkit-file-upload-button {
+            cursor: pointer;
+        }
+
+        .profile-details {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+
+        .profile-details label {
+            font-size: 18px;
+            font-weight: bold;
+            color: grey;
+            padding-top: 6px;
+        }
+
+        .profile-details .user-details {
+            margin-top: 80px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .profile-details .user-fav {
+            margin-top: 100px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .profile-details .user-fav .userReadlist {
+            padding-left: 135px;
+            padding: 40px;
+            background-color: #d3d3d3;
+            border-radius: 10px;
+        }
+
+        .profile-details .user-fav .userFavourites {
+            padding-right: 135px;
+            padding: 40px;
+            background-color: #d3d3d3;
+            border-radius: 10px;
+        }
+
+        .profile-details .user-fav .userReadlist label {
+            color: green;
+        }
+
+        .profile-details .user-fav .userFavourites label {
+            color: green;
+        }
+
+        .profile-details button {
+            width: 150px;
+            height: 40px;
+            border-radius: 40px;
+            border: 0.5px solid grey;
+            margin-top: 50px;
+        }
+
+        .profile-details .user-fav .updateButton {
+            margin-top: 40px;
+        }
+
+        .profile-details a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+<div class="top-image">
+    <img src="{% static 'registerApp/images/book_img.png' %}" alt="">
+    <a href="{% url 'registerApp:index' %}">
+      <i class="fa fa-arrow-left"></i>
+  </a>
+</div>
+<div class="upload">
+    {% if user_profile.profile_picture %}
+        <img src="{{ user_profile.profile_picture.url }}" width="100" height="100" alt="">
+    {% else %}
+        <img src="{% static 'registerApp/images/noprofil.jpg' %}" width="100" height="100" alt="">
+    {% endif %}
+    <div class="round">
+        <input type="file" name="profile_picture" id="profilePictureInput" onchange="previewProfilePicture()">
+        {% comment %} <i class="fa fa-camera" style="color: #fff;"></i> {% endcomment %}
+    </div>
+</div>
+
+<div class="profile-details">
+    <label for="userName">{{ user_profile.user.username }}</label>
+    <label for="location">{{ user_profile.location}}</label>
+    <div class="user-details">
+        <div class="fName">
+            <h2>First Name</h2>
+            <label for="firstName">{{ user_profile.user.first_name }}</label>
+        </div>
+        <div class="lName">
+            <h2>Last Name</h2>
+            <label for="lastName">{{ user_profile.user.last_name }}</label>
+        </div>
+        <div class="email">
+            <h2>Email</h2>
+            <label for="email">{{ user_profile.user.email }}</label>
+        </div>
+    </div>
+    <div class="user-fav">
+        <div class="userReadlist">
+            <label for="read_count">{{ user_readlist_count }}</label>
+            <h2>Readlist</h2>
+        </div>
+        <div class="userFavourites">
+            <label for="fav_count">{{ user_favourites_count }}</label>
+            <h2>Favourites</h2>
+        </div>
+
+    </div>
+    <div class="updateButton">
+        <button type="button"><a href="{% url 'registerApp:profile_update' %}">Update Profile</a></button>
+    </div>
+</div>
+
+<script src="{% static 'registerApp/js/index.js' %}"></script>
+</body>
 </html>

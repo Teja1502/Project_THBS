@@ -81,49 +81,6 @@ def userLogout(request):
 
 
 
-# def book_search(request):
-#     if request.method == 'POST':
-#         search_query = request.POST.get('search_query')
-
-        
-#         max_results = 25
-
-        
-#         api_key = 'AIzaSyBUBwEh8IFXh26H6Naballr5wEf7ujCckg'
-#         url = f'https://www.googleapis.com/books/v1/volumes?q={search_query}&maxResults={max_results}&key={api_key}'
-#         response = requests.get(url)
-#         data = response.json()
-
-       
-#         books = []
-#         if 'items' in data:
-#             for item in data['items']:
-#                 book_info = item['volumeInfo']
-#                 title = book_info.get('title', 'N/A')
-#                 authors = ', '.join(book_info.get('authors', ['Unknown']))
-#                 description = book_info.get('description', 'No description available')
-#                 thumbnail = book_info['imageLinks']['thumbnail'] if 'imageLinks' in book_info else None
-
-#                 if re.match("^[a-zA-Z0-9 _-]*$", title):
-#                     authors = ', '.join(book_info.get('authors', ['Unknown']))
-#                     description = book_info.get('description', 'No description available')
-#                     thumbnail = book_info['imageLinks']['thumbnail'] if 'imageLinks' in book_info else None
-
-#                     books.append({
-#                         'title': title,
-#                         'authors': authors,
-#                         'description': description,
-#                         'thumbnail': thumbnail,
-                        
-#                     })
-
-#         return render(request, 'registerApp/book_search.html', {'books': books, 'search_query': search_query})
-
-#     return render(request, 'registerApp/book_search.html')
-
-
-
-
 
 @login_required
 @csrf_exempt  
@@ -175,41 +132,7 @@ def add_to_favourites(request, title):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-# @login_required
-# def add_to_readlist(request):
-#     if request.method == 'POST':
-#         form = ReadlistForm(request.POST)
-#         if form.is_valid():
-#             user = request.user
-#             book_data = {
-#                 'title': form.cleaned_data['title'],
-#                 'authors': form.cleaned_data['authors'],
-#                 'description': form.cleaned_data['description'],
-#                 'thumbnail': form.cleaned_data['thumbnail'],
-#             }
-#             Readlist.objects.get_or_create(user=user, book=book_data)
-#             return JsonResponse({'message': 'Book added to Readlist successfully'})
-#         else:
-#             return JsonResponse({'success': False, 'errors': form.errors})
-#     return JsonResponse({'success': False, 'errors': 'Invalid request method'})
 
-# @login_required
-# def add_to_favourites(request):
-#     if request.method == 'POST':
-#         form = FavouritesForm(request.POST)
-#         if form.is_valid():
-#             user = request.user
-#             book_data = {
-#                 'title': form.cleaned_data['title'],
-#                 'authors': form.cleaned_data['authors'],
-#                 'description': form.cleaned_data['description'],
-#                 'thumbnail': form.cleaned_data['thumbnail'],
-#             }
-#             Favourites.objects.get_or_create(user=user, book=book_data)
-#             return JsonResponse({'message': 'Book added to Favourites successfully'})
-#         else:
-#             return JsonResponse({'success': False, 'errors': form.errors})
-#     return JsonResponse({'success': False, 'errors': 'Invalid request method'})
 
 
 @login_required
@@ -295,28 +218,7 @@ def profile_update(request):
 
     return render(request, 'registerApp/profile_update.html', {'form': form})
 
-# @login_required
-# def profile_update(request):
-#     user_profile = get_object_or_404(UserProfile, user=request.user)
 
-#     if request.method == 'POST':
-#         try:
-#             profile_picture = request.FILES['profile_picture']
-#             form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
-#         except MultiValueDictKeyError:
-#             # Handle the case where 'profile_picture' is not in request.FILES
-#             form = UserProfileForm(request.POST, instance=user_profile)
-#         if form.is_valid():
-#             with transaction.atomic():
-#                 form.save()
-#             messages.success(request, 'Profile updated successfully.')
-#             return redirect('registerApp:profile')
-#         else:
-#             print(form.errors)  # Print form errors to the console
-#     else:
-#         form = UserProfileForm(instance=user_profile)
-
-#     return render(request, 'registerApp/profile_update.html', {'form': form})
 
 @login_required
 def index(request):
@@ -326,6 +228,23 @@ def index(request):
 def book_detail(request, isbn):
     return render(request, 'bookstore/book.html', {'isbn': isbn})
 
+
+@login_required
+def profile_update(request):
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('registerApp:profile')
+        else:
+            print(form.errors)  # Print form errors to the console
+    else:
+        form = UserProfileForm(instance=user_profile)
+
+    return render(request, 'registerApp/profile_update.html', {'form': form, 'user_profile': user_profile})
 
 
 
