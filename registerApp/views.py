@@ -229,22 +229,22 @@ def book_detail(request, isbn):
     return render(request, 'bookstore/book.html', {'isbn': isbn})
 
 
-@login_required
-def profile_update(request):
-    user_profile = get_object_or_404(UserProfile, user=request.user)
+# @login_required
+# def profile_update(request):
+#     user_profile = get_object_or_404(UserProfile, user=request.user)
 
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Profile updated successfully.')
-            return redirect('registerApp:profile')
-        else:
-            print(form.errors)  # Print form errors to the console
-    else:
-        form = UserProfileForm(instance=user_profile)
+#     if request.method == 'POST':
+#         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Profile updated successfully.')
+#             return redirect('registerApp:profile')
+#         else:
+#             print(form.errors)  # Print form errors to the console
+#     else:
+#         form = UserProfileForm(instance=user_profile)
 
-    return render(request, 'registerApp/profile_update.html', {'form': form, 'user_profile': user_profile})
+#     return render(request, 'registerApp/profile_update.html', {'form': form, 'user_profile': user_profile})
 
 
 
