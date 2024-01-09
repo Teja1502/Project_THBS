@@ -186,6 +186,9 @@ document.addEventListener("DOMContentLoaded", () => {
   drawChartBook("fiction");
   drawChartBook("poetry");
   drawChartBook("fantasy");
+  drawChartBook("business");
+  drawChartBook("engineering");
+
 });
 let mainNavLinks = document.querySelectorAll(".scrolltoview");
 window.addEventListener("scroll", (event) => {
@@ -259,6 +262,8 @@ const prev = (subject) => {
     drawChartBook(subject, startIndex);
   }
 };
+
+
 const modal = document.querySelector(".modal");
 const trigger = document.querySelector(".trigger");
 const closeButton = document.querySelector(".close-button");
@@ -271,42 +276,42 @@ const windowOnClick = ({ target }) => {
 trigger.addEventListener("click", toggleModal);
 closeButton.addEventListener("click", toggleModal);
 window.addEventListener("click", windowOnClick);
-let pwaInstalled = localStorage.getItem("pwaInstalled") == "yes";
-if (window.matchMedia("(display-mode: standalone)").matches) {
-  localStorage.setItem("pwaInstalled", "yes");
-  pwaInstalled = true;
-}
-if (window.navigator.standalone === true) {
-  localStorage.setItem("pwaInstalled", "yes");
-  pwaInstalled = true;
-}
-if (pwaInstalled) {
-  document.getElementById("installPWA").style.display = "none";
-} else {
-  document.getElementById("installPWA").style.display = "inline-flex";
-}
-let deferredPrompt = null;
-window.addEventListener("beforeinstallprompt", (e) => {
-  deferredPrompt = e;
-});
-async function installPWA() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(({ outcome }) => {
-      if (outcome === "accepted") {
-        console.log("Your PWA has been installed");
-      } else {
-        console.log("User chose to not install your PWA");
-      }
-      deferredPrompt = null;
-    });
-  }
-}
-window.addEventListener("appinstalled", (evt) => {
-  localStorage.setItem("pwaInstalled", "yes");
-  pwaInstalled = true;
-  document.getElementById("installPWA").style.display = "none";
-});
+// let pwaInstalled = localStorage.getItem("pwaInstalled") == "yes";
+// if (window.matchMedia("(display-mode: standalone)").matches) {
+//   localStorage.setItem("pwaInstalled", "yes");
+//   pwaInstalled = true;
+// }
+// if (window.navigator.standalone === true) {
+//   localStorage.setItem("pwaInstalled", "yes");
+//   pwaInstalled = true;
+// }
+// if (pwaInstalled) {
+//   document.getElementById("installPWA").style.display = "none";
+// } else {
+//   document.getElementById("installPWA").style.display = "inline-flex";
+// }
+// let deferredPrompt = null;
+// window.addEventListener("beforeinstallprompt", (e) => {
+//   deferredPrompt = e;
+// });
+// async function installPWA() {
+//   if (deferredPrompt) {
+//     deferredPrompt.prompt();
+//     deferredPrompt.userChoice.then(({ outcome }) => {
+//       if (outcome === "accepted") {
+//         console.log("Your PWA has been installed");
+//       } else {
+//         console.log("User chose to not install your PWA");
+//       }
+//       deferredPrompt = null;
+//     });
+//   }
+// }
+// window.addEventListener("appinstalled", (evt) => {
+//   localStorage.setItem("pwaInstalled", "yes");
+//   pwaInstalled = true;
+//   document.getElementById("installPWA").style.display = "none";
+// });
 
 function previewProfilePicture() {
   var input = document.getElementById('profilePictureInput');
@@ -341,3 +346,5 @@ document.addEventListener('DOMContentLoaded', function () {
       window.location.href = "{% url 'registerApp:index' %}";
   }
 });
+
+
