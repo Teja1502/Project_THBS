@@ -137,13 +137,13 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    overflow: auto;
-    padding: 32px;
+    padding: 16px;
     width: 20%;
     height: 100%;
     background-color: var(--bg-color);
     font-size: 14px;
     transition: all 0.2s;
+    overflow-y: scroll
   }
   
   .logo {
@@ -195,7 +195,10 @@
     margin: 32px;
     width: 32px;
     height: 16px;
+    display: none;
   }
+
+  
   
   .theme-switch input {
     display: none;
@@ -480,6 +483,8 @@
   
   .trigger {
     cursor: pointer;
+    margin-top: 0px;
+    padding-top: 0px;
   }
   
   .modal {
@@ -559,6 +564,7 @@
       padding: 16px;
       width: 100%;
       height: auto;
+      overflow-y: scroll
     }
   
     article {

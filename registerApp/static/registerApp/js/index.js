@@ -210,36 +210,36 @@ const getRandomColor = () =>
 const toggleSwitch = document.querySelector(
   '.theme-switch input[type="checkbox"]'
 );
-// if (localStorage.getItem("marcdownTheme") == "dark") {
-//   document.documentElement.setAttribute("data-theme", "dark");
-//   document
-//     .querySelector("meta[name=theme-color]")
-//     .setAttribute("content", "#090b28");
-//   toggleSwitch.checked = true;
-//   localStorage.setItem("marcdownTheme", "dark");
-// } else {
-//   document.documentElement.setAttribute("data-theme", "light");
-//   document
-//     .querySelector("meta[name=theme-color]")
-//     .setAttribute("content", "#ffffff");
-//   toggleSwitch.checked = false;
-//   localStorage.setItem("marcdownTheme", "light");
-// }
-// const switchTheme = ({ target }) => {
-//   if (target.checked) {
-//     document.documentElement.setAttribute("data-theme", "dark");
-//     document
-//       .querySelector("meta[name=theme-color]")
-//       .setAttribute("content", "#090b28");
-//     localStorage.setItem("marcdownTheme", "dark");
-//   } else {
-//     document.documentElement.setAttribute("data-theme", "light");
-//     document
-//       .querySelector("meta[name=theme-color]")
-//       .setAttribute("content", "#ffffff");
-//     localStorage.setItem("marcdownTheme", "light");
-//   }
-// };
+if (localStorage.getItem("marcdownTheme") == "dark") {
+  document.documentElement.setAttribute("data-theme", "dark");
+  document
+    .querySelector("meta[name=theme-color]")
+    .setAttribute("content", "#090b28");
+  toggleSwitch.checked = true;
+  localStorage.setItem("marcdownTheme", "dark");
+} else {
+  document.documentElement.setAttribute("data-theme", "light");
+  document
+    .querySelector("meta[name=theme-color]")
+    .setAttribute("content", "#ffffff");
+  toggleSwitch.checked = false;
+  localStorage.setItem("marcdownTheme", "light");
+}
+const switchTheme = ({ target }) => {
+  if (target.checked) {
+    document.documentElement.setAttribute("data-theme", "dark");
+    document
+      .querySelector("meta[name=theme-color]")
+      .setAttribute("content", "#090b28");
+    localStorage.setItem("marcdownTheme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    document
+      .querySelector("meta[name=theme-color]")
+      .setAttribute("content", "#ffffff");
+    localStorage.setItem("marcdownTheme", "light");
+  }
+};
 toggleSwitch.addEventListener("change", switchTheme, false);
 let startIndex = 0;
 const next = (subject) => {
@@ -276,42 +276,42 @@ const windowOnClick = ({ target }) => {
 trigger.addEventListener("click", toggleModal);
 closeButton.addEventListener("click", toggleModal);
 window.addEventListener("click", windowOnClick);
-// let pwaInstalled = localStorage.getItem("pwaInstalled") == "yes";
-// if (window.matchMedia("(display-mode: standalone)").matches) {
-//   localStorage.setItem("pwaInstalled", "yes");
-//   pwaInstalled = true;
-// }
-// if (window.navigator.standalone === true) {
-//   localStorage.setItem("pwaInstalled", "yes");
-//   pwaInstalled = true;
-// }
-// if (pwaInstalled) {
-//   document.getElementById("installPWA").style.display = "none";
-// } else {
-//   document.getElementById("installPWA").style.display = "inline-flex";
-// }
-// let deferredPrompt = null;
-// window.addEventListener("beforeinstallprompt", (e) => {
-//   deferredPrompt = e;
-// });
-// async function installPWA() {
-//   if (deferredPrompt) {
-//     deferredPrompt.prompt();
-//     deferredPrompt.userChoice.then(({ outcome }) => {
-//       if (outcome === "accepted") {
-//         console.log("Your PWA has been installed");
-//       } else {
-//         console.log("User chose to not install your PWA");
-//       }
-//       deferredPrompt = null;
-//     });
-//   }
-// }
-// window.addEventListener("appinstalled", (evt) => {
-//   localStorage.setItem("pwaInstalled", "yes");
-//   pwaInstalled = true;
-//   document.getElementById("installPWA").style.display = "none";
-// });
+let pwaInstalled = localStorage.getItem("pwaInstalled") == "yes";
+if (window.matchMedia("(display-mode: standalone)").matches) {
+  localStorage.setItem("pwaInstalled", "yes");
+  pwaInstalled = true;
+}
+if (window.navigator.standalone === true) {
+  localStorage.setItem("pwaInstalled", "yes");
+  pwaInstalled = true;
+}
+if (pwaInstalled) {
+  document.getElementById("installPWA").style.display = "none";
+} else {
+  document.getElementById("installPWA").style.display = "inline-flex";
+}
+let deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", (e) => {
+  deferredPrompt = e;
+});
+async function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(({ outcome }) => {
+      if (outcome === "accepted") {
+        console.log("Your PWA has been installed");
+      } else {
+        console.log("User chose to not install your PWA");
+      }
+      deferredPrompt = null;
+    });
+  }
+}
+window.addEventListener("appinstalled", (evt) => {
+  localStorage.setItem("pwaInstalled", "yes");
+  pwaInstalled = true;
+  document.getElementById("installPWA").style.display = "none";
+});
 
 function previewProfilePicture() {
   var input = document.getElementById('profilePictureInput');
