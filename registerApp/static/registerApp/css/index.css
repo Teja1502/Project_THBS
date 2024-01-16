@@ -483,8 +483,8 @@
   
   .trigger {
     cursor: pointer;
-    margin-top: 0px;
-    padding-top: 0px;
+    margin-top: 3px;
+    padding-top: 10px;
   }
   
   .modal {
@@ -564,7 +564,7 @@
       padding: 16px;
       width: 100%;
       height: auto;
-      overflow-y: scroll
+      overflow-y: scroll;
     }
   
     article {
