@@ -14,6 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction 
 import json
 import re
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 
@@ -38,6 +40,12 @@ def userLogin(request):
 
     return render(request, 'registerApp/userLogin.html')
 
+
+def is_valid_username(username):
+    # Check if the username contains only alphanumeric characters and underscores
+    return re.match(r'^[a-zA-Z0-9_]+$', username) is not None
+
+
 def register(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -48,16 +56,25 @@ def register(request):
         pass2 = request.POST['pass2']
         location = request.POST['location']
 
-                # Check if passwords match
+        # Check if passwords match
         if pass1 != pass2:
             messages.error(request, "Passwords do not match. Please enter matching passwords.")
+            return render(request, 'registerApp/userRegister.html')
+
+        if not is_valid_username(username):
+            messages.error(request, "Invalid username. Only alphanumeric characters and '_' are allowed.")
             return render(request, 'registerApp/userRegister.html')
 
         # Check if username already exists
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists. Please choose a different username.")
             return render(request, 'registerApp/userRegister.html')
-        
+
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "An account with this email already exists. Please use a different email.")
+            return render(request, 'registerApp/userRegister.html')
+
         # Create user and profile
         myUser = User.objects.create_user(username=username, password=pass1)
         myUser.first_name = fname
@@ -73,6 +90,7 @@ def register(request):
         return redirect('registerApp:login')
 
     return render(request, 'registerApp/userRegister.html')
+
      
 
 def userLogout(request):
@@ -201,12 +219,23 @@ def profile_update(request):
             with transaction.atomic():
                 form.save()
 
-            # Assuming you have a UserProfile model with a OneToOneField to User
-            # user_profile.user.profile_picture = request.POST['profile_picture']
-            user_profile.user.username = request.POST['username']
+            # Check if the entered username is already in use by another user
+            new_username = request.POST.get('username')
+            if new_username != request.user.username and User.objects.filter(username=new_username).exists():
+                form.add_error('username', 'Username already exists. Please choose a different username.')
+                return render(request, 'registerApp/profile_update.html', {'form': form})
+
+            # Check if the entered email is already in use by another user
+            new_email = request.POST.get('email')
+            if new_email != request.user.email and User.objects.filter(email=new_email).exists():
+                form.add_error('email', 'Email already exists. Please choose a different email.')
+                return render(request, 'registerApp/profile_update.html', {'form': form})
+
+            # Update user information
+            user_profile.user.username = new_username
             user_profile.user.first_name = request.POST['first_name']
             user_profile.user.last_name = request.POST['last_name']
-            user_profile.user.email = request.POST['email']
+            user_profile.user.email = new_email
             user_profile.user.save()
 
             messages.success(request, 'Profile updated successfully.')
@@ -217,6 +246,8 @@ def profile_update(request):
         form = UserProfileForm(instance=user_profile)
 
     return render(request, 'registerApp/profile_update.html', {'form': form})
+
+
 
 
 
