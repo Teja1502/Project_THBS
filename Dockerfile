@@ -17,6 +17,7 @@ FROM python:3.10.12
 WORKDIR /app
 COPY --from=builder /app /app
 COPY . .
+RUN pip3 install django
 RUN python manage.py migrate
 
 # Set the entrypoint
