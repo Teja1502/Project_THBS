@@ -16,36 +16,37 @@
             justify-content: center;
             height: 100vh;
         }
-
+    
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
+    
         .sub-con {
-            width: 400px;
-            padding: 30px;
+            width: 130%;
+            max-width: 400px;
+            padding: 20px;
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
+    
         h1 {
             text-align: center;
             color: #333;
         }
-
+    
         form {
             margin-top: 20px;
         }
-
+    
         label {
             display: block;
             margin-bottom: 8px;
             color: #555;
         }
-
+    
         input[type="text"],
         input[type="password"],
         input[type="email"] {
@@ -57,7 +58,7 @@
             border-radius: 4px;
             outline: none;
         }
-
+    
         button {
             background-color: #4caf50;
             color: white;
@@ -65,17 +66,29 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            margin-left: 115px;
         }
-
+    
         button:hover {
             background-color: #45a049;
         }
-
+    
         .error-message {
             color: red;
             margin-top: 10px;
         }
+    
+        @media only screen and (max-width: 600px) {
+            .sub-con {
+                width: 90%;
+                padding: 15px;
+            }
+            button {
+                margin-left: 65px;
+            }
+        }
     </style>
+    
 </head>
 <body>
     <div class="container">
@@ -83,15 +96,36 @@
             <h1>Update Profile</h1>
             <form method="post" action="{% url 'registerApp:profile_update' %}" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
+
+                {{ form.profile_picture.label_tag }}
+                {{ form.profile_picture }}
+                <br>
+
+
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                <br>
+
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+                <br>
+
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
+                <br>
+
+                {# Hide the email label and manually create an input field #}
+                <label for="{{ form.email.id_for_label }}" style="display: none;">{{ form.email.label_tag }}</label>
+                <input type="email" name="{{ form.email.name }}" value="{{ form.email.value }}" id="{{ form.email.id_for_label }}" style="display: none;">
+                <br>
+                                
                 <button type="submit">Save Changes</button>
             </form>
+
             {% if form.errors %}
                 <p style="color: red;">{{ form.errors }}</p>
             {% endif %}
         </div>
-        
     </div>
-    
 </body>
 </html>

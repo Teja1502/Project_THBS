@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +9,9 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-
   <title>Bookstore</title>
-
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <link rel="icon" href="{% static 'registerApp/images/favicon.ico' %}" />
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet" />
-  <link href="css/responsive.css" rel="stylesheet" />
 
   <style>
     body {
@@ -25,7 +22,7 @@
       padding: 0;
       overflow-x: hidden;
     }
-
+    
     .hero_area {
       height: 100vh;
       display: flex;
@@ -34,18 +31,18 @@
       justify-content: space-between;
       position: relative;
     }
-
+    
     .hero_area .logo {
+      font-size: 30px;
+      font-weight: bold;
+      color: #1cbbb4;
       position: absolute;
       top: 15px;
       left: 15px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #1cbbb4;
     }
-
+    
     .right-image {
-      background-image: url('https://images.pexels.com/photos/1907785/pexels-photo-1907785.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+      background-image: url('../../static/registerApp/images/landg_page.png');
       background-size: cover;
       background-position: center;
       height: 100%;
@@ -53,37 +50,34 @@
       position: fixed;
       right: 0;
       top: 0;
-      /* clip-path: polygon(100% 0%, 100% 100%, 50% 90%, 0 80%, 0 0%); */
-      border-top-left-radius: 15% 100%;
-      border-bottom-left-radius: 15% 100%; 
     }
-
+    
     .left-content {
       width: 50%;
       padding: 0 20px;
       text-align: center;
       z-index: 1;
     }
-
+    
     .left-content h1 {
       font-size: 36px;
       font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .left-content p {
-      font-size: 18px;
       margin-bottom: 30px;
     }
-
-    .btn-box {
-      margin-top: 20px;
-      margin-left: 100px;
+    
+    .left-content p {
+      font-size: 18px;
+      margin-bottom: 50px;
     }
-
+    
+    .btn-box {
+      margin-top: 40px;
+      margin-left:100px;
+    }
+    
     .btn-box a {
       display: block;
-      width: 50%;
+      width: 70%;
       padding: 15px;
       margin-bottom: 10px;
       text-align: center;
@@ -91,34 +85,95 @@
       text-decoration: none;
       border-radius: 5px;
     }
-
+    
     .btn-1 {
       background: #1cbbb4;
     }
-
+    
     .btn-2 {
       background: #333;
     }
+    
+    .btn-1:hover {
+      background: #416a60;
+    }
+    
+    .btn-2:hover {
+      background: #416a60;
+    }
+    
+    @media (max-width: 900px) {
+      body {
+        background-image: url('../../static/registerApp/images/bookstore_landing.png');
+        color: #cce0de;
+      }
+    
+      .hero_area {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: auto;
+      }
+    
+      .right-image {
+        display: none;
+      }
+    
+      .left-content {
+        width: 100%; /* Adjusted width for better responsiveness */
+        padding: 20px;
+        text-align: center;
+      }
+      .hero_area .logo {
+        font-size: 25px;
+        font-weight: bold;
+        color: #1cbbb4;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        line-height: 20px;
+      }
+    
+      .left-content h1 {
+        font-size: 45px; /* Adjusted font size for h1 */
+        margin-bottom: 55px;
+        margin-top: 200px; /* Adjusted margin for better spacing */
+      }
+    
+      .left-content p {
+        font-size: 23px; /* Adjusted font size for p */
+        margin-bottom: 70px; /* Adjusted margin for better spacing */
+      }
+    
+      .btn-box {
+        margin-top: 40px;
+        align-items: center;
+        text-align: center;
+      }
+    
+      .btn-box a {
+        width: 75%;
+        padding: 15px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    }   
   </style>
 </head>
 
 <body>
   <div class="hero_area">
     <div class="logo">Bookstore</div>
-    <div class="right-image"></div>
+    <div class="right-image"></div>  
     <div class="left-content">
-      <h1>You Can <br> Explore Books <br> Here</h1>
-      <p>It is a long established fact that a reader will be distracted by the readable content of a page.</p>
+      <h1>Explore a world <br>of books<br>at our online Bookstore</h1>
+      <p>where every reader finds their next captivating adventure.<p>
       <div class="btn-box">
         <a href="{% url 'registerApp:login' %}" class="btn-1">Login</a>
         <a href="{% url 'registerApp:register' %}" class="btn-2">Signup</a>
-    </div>    
+      </div>   
     </div>
   </div>
-
-  <script src="js/jquery-3.4.1.min.js"></script>
-  <script src="js/bootstrap.js"></script>
-  <script src="js/custom.js"></script>
 </body>
 
 </html>

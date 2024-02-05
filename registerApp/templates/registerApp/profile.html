@@ -1,196 +1,267 @@
-
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Input File Upload 2</title>
+    <link rel="icon" href="{% static 'registerApp/images/favicon.ico' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <title>Stylish Profile</title>
     <style>
         body {
-            margin: 0px;
-            font-family: sans-serif;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
         }
 
         .top-image {
+            position: relative;
             width: 100%;
-            height: 30px;
+            height: 200px;
+            overflow: hidden;
+            z-index: 1; /* Set a lower z-index */
         }
 
         .top-image img {
             width: 100%;
-            height: 150px;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .top-image i {
-          color: grey;
-          position: absolute;
-          top: 10px;
-          left: 4px;
-          font-size: 28px;
+        .top-image a {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .profile-container {
+            position: relative;
+            z-index: 2;
         }
 
         .upload {
-            width: 100px;
-            position: relative;
-            margin: auto;
+            text-align: center;
+            margin-top: -80px;
         }
 
         .upload img {
             border-radius: 50%;
-            border: 0.5px solid rgba(0, 0, 0, 0.5);
-            margin-top: 60px;
-            height: 120px;
-            width: 120px;
+            border: 3px solid #fff;
+            margin-top: 11px;
+            height: 150px;
+            width: 150px;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+            margin-bottom: 30px;
         }
 
-        {% comment %} .upload .round {
+        .upload .round {
             position: absolute;
             bottom: 0;
             right: 0;
             background: #00B4FF;
-            width: 32px;
-            height: 32px;
-            line-height: 33px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
             text-align: center;
             border-radius: 50%;
             overflow: hidden;
-        } {% endcomment %}
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
 
         .upload .round input[type="file"] {
             position: absolute;
             transform: scale(2);
             opacity: 0;
+            cursor: pointer;
         }
 
-        input[type=file]::-webkit-file-upload-button {
-            cursor: pointer;
+        .upload:hover img {
+            transform: scale(1.1);
+        }
+
+        .upload .round:hover {
+            background: #007bb5;
         }
 
         .profile-details {
             text-align: center;
-            display: flex;
-            flex-direction: column;
             padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin: -70px auto 50px;
+            max-width: 1000px;
         }
 
         .profile-details label {
             font-size: 18px;
             font-weight: bold;
-            color: grey;
-            padding-top: 6px;
+            color: #333;
+            margin-top: 10px;
+            display: block;
         }
 
-        .profile-details .user-details {
-            margin-top: 80px;
+        .profile-details h2 {
+            font-size: 22px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .user-details,
+        .user-fav {
             display: flex;
-            flex-direction: row;
             justify-content: space-around;
+            margin-top: 30px;
         }
 
-        .profile-details .user-fav {
-            margin-top: 100px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-        }
-
-        .profile-details .user-fav .userReadlist {
-            padding-left: 135px;
-            padding: 40px;
-            background-color: #d3d3d3;
+        .user-fav .userReadlist,
+        .user-fav .userFavourites {
+            padding: 20px;
+            width: 130px;
+            background-color: #babcc3;
             border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .profile-details .user-fav .userFavourites {
-            padding-right: 135px;
-            padding: 40px;
-            background-color: #d3d3d3;
-            border-radius: 10px;
+        .user-fav .userReadlist:hover,
+        .user-fav .userFavourites:hover {
+            transform: scale(1.05);
         }
 
-        .profile-details .user-fav .userReadlist label {
-            color: green;
+        .user-fav .userReadlist label,
+        .user-fav .userFavourites label {
+            color: #4caf50;
+            font-weight: bold;
         }
 
-        .profile-details .user-fav .userFavourites label {
-            color: green;
-        }
-
-        .profile-details button {
+        .updateButton button {
             width: 150px;
             height: 40px;
             border-radius: 40px;
-            border: 0.5px solid grey;
-            margin-top: 50px;
+            border: 2px solid #fff;
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
 
-        .profile-details .user-fav .updateButton {
-            margin-top: 40px;
+        .updateButton button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
         }
 
         .profile-details a {
             text-decoration: none;
-            color: black;
+            color: #333;
             font-weight: bold;
             font-size: 13px;
         }
+        @media only screen and (max-width: 600px) {
+            .top-image {
+                height: 150px;
+            }
+    
+            .top-image a {
+                font-size: 18px;
+            }
+    
+            .upload img {
+                height: 120px;
+                width: 120px;
+            }
+    
+            .upload .round {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 14px;
+            }
+    
+            .profile-details {
+                padding: 20px;
+                margin: -50px auto 20px;
+            }
+    
+            .user-details,
+            .user-fav {
+                flex-direction: column;
+            }
+    
+            .user-fav .userReadlist,
+            .user-fav .userFavourites {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+    
+            .updateButton button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
+
 <body>
-<div class="top-image">
-    <img src="{% static 'registerApp/images/book_img.png' %}" alt="">
-    <a href="{% url 'registerApp:index' %}">
-      <i class="fa fa-arrow-left"></i>
-  </a>
-</div>
-<div class="upload">
-    {% if user_profile.profile_picture %}
-        <img src="{{ user_profile.profile_picture.url }}" width="100" height="100" alt="">
-    {% else %}
-        <img src="{% static 'registerApp/images/noprofil.jpg' %}" width="100" height="100" alt="">
-    {% endif %}
-    <div class="round">
-        <input type="file" name="profile_picture" id="profilePictureInput" onchange="previewProfilePicture()">
-        {% comment %} <i class="fa fa-camera" style="color: #fff;"></i> {% endcomment %}
+    <div class="top-image">
+        <img src="{% static 'registerApp/images/book_img.png' %}" alt="">
+        <a href="{% url 'registerApp:index' %}">
+            <i class="fas fa-arrow-left"></i>
+        </a>
     </div>
-</div>
 
-<div class="profile-details">
-    <label for="userName">{{ user_profile.user.username }}</label>
-    <label for="location">{{ user_profile.location}}</label>
-    <div class="user-details">
-        <div class="fName">
-            <h2>First Name</h2>
-            <label for="firstName">{{ user_profile.user.first_name }}</label>
-        </div>
-        <div class="lName">
-            <h2>Last Name</h2>
-            <label for="lastName">{{ user_profile.user.last_name }}</label>
-        </div>
-        <div class="email">
-            <h2>Email</h2>
-            <label for="email">{{ user_profile.user.email }}</label>
-        </div>
-    </div>
-    <div class="user-fav">
-        <div class="userReadlist">
-            <label for="read_count">{{ user_readlist_count }}</label>
-            <h2>Readlist</h2>
-        </div>
-        <div class="userFavourites">
-            <label for="fav_count">{{ user_favourites_count }}</label>
-            <h2>Favourites</h2>
+    <div class="profile-container">
+        <div class="upload">
+            {% if user_profile.profile_picture %}
+            <img src="{{ user_profile.profile_picture.url }}" alt="">
+            {% else %}
+            <img src="{% static 'registerApp/images/noprofil.jpg' %}" alt="">
+            {% endif %}
+            <div class="round">
+                <input type="file" name="profile_picture" id="profilePictureInput" onchange="previewProfilePicture()">
+                <i class="fas fa-camera" style="color: #fff;"></i>
+            </div>
         </div>
 
+        <div class="profile-details">
+            <label for="userName">{{ user_profile.user.username }}</label>
+            <label for="location">{{ user_profile.location}}</label>
+            <div class="user-details">
+                <div class="fName">
+                    <h2>First Name</h2>
+                    <label for="firstName">{{ user_profile.user.first_name }}</label>
+                </div>
+                <div class="lName">
+                    <h2>Last Name</h2>
+                    <label for="lastName">{{ user_profile.user.last_name }}</label>
+                </div>
+                <div class="email">
+                    <h2>Email</h2>
+                    <label for="email">{{ user_profile.user.email }}</label>
+                </div>
+            </div>
+            <div class="user-fav">
+                <div class="userReadlist">
+                    <label for="read_count">{{ user_readlist_count }}</label>
+                    <h2>Readlist</h2>
+                </div>
+                <div class="userFavourites">
+                    <label for="fav_count">{{ user_favourites_count }}</label>
+                    <h2>Favourites</h2>
+                </div>
+            </div>
+            <div class="updateButton">
+                <button type="button"><a href="{% url 'registerApp:profile_update' %}">Update Profile</a></button>
+            </div>
+        </div>
     </div>
-    <div class="updateButton">
-        <button type="button"><a href="{% url 'registerApp:profile_update' %}">Update Profile</a></button>
-    </div>
-</div>
 
-<script src="{% static 'registerApp/js/index.js' %}"></script>
+    <script src="{% static 'registerApp/js/index.js' %}"></script>
 </body>
+
 </html>
