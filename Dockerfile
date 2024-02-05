@@ -27,7 +27,7 @@
 
 # # Set the entrypoint
 # ENTRYPOINT [ "python", "manage.py", "runserver", "0.0.0.0:8002" ]
-Use an official Python runtime as a parent image
+# Use an official Python runtime as a parent image
 FROM python:3.9 AS builder
  
 # Set the working directory in the container
