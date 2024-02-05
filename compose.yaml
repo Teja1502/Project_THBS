@@ -19,7 +19,7 @@ services:
     networks:
       - mynetwork
     ports:
-      - "8080:80"
+      - "8081:80" # Map phpMyAdmin to port 8081
     environment:
       - PMA_ARBITRARY=1
       - MYSQL_ROOT_PASSWORD=root
@@ -43,4 +43,5 @@ services:
 networks:
   mynetwork:
     driver: bridge
+
 
