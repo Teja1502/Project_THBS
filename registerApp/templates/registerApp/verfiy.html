@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIF Display Template</title>
+</head>
+<body>
+    
+    <div style="text-align: center; margin-top: 150px;">
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+        <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--1II67h1R--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://faruknasir.com/images/blog/2021/verification_url.png" alt="GIF Image">
+    </div>
+
+</body>
+</html>

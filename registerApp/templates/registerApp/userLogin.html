@@ -1,136 +1,46 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-  <meta charset="utf-8">
-  <title>Sign Up!</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f0f0f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+{% extends "registerApp/base.html"%}
 
-    .container {
-      width: 350px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      border-radius: 10px;
-      background-color: rgba(128, 128, 128, 0.3);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
+    {% block content %}
 
-    h1 {
-      text-align: center;
-      color: #000;
-    }
 
-    form {
-      max-width: 300px;
-      width: 100%;
-      margin-top: 20px;
-    }
+    <div class="global-container">
+        <div class="card login-form">
+        <div class="card-body">
+            <h3 class="card-title text-center">Log in to Django</h3>
+            {% if messages %}
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #000;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-    }
-
-    input[type="submit"] {
-      background-color: #4caf50;
-      color: white;
-      cursor: pointer;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-    }
-
-    input[type="submit"]:hover {
-      background-color: #45a049;
-    }
-
-    .new-account {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .new-account a {
-      text-decoration: none;
-      color: #000;
-    }
-
-    .new-account a:hover {
-      text-decoration: underline;
-    }
-
-    .message {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .message p {
-      margin: 0;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    .message p.success {
-      background-color: #d4edda;
-      color: #155724;
-    }
-
-    .message p.error {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Login</h1>
-    <form action="{% url 'registerApp:login' %}" method="post">
-      {% csrf_token %}
-      <label for="username">User Name:</label>
-      <input type="text" name="username" placeholder="Enter username" required="True">
-
-      <label for="pass1">Password:</label>
-      <input type="password" name="pass1" placeholder="Enter password" required="True">
-
-      <div class="new-account">
-        <a href="{% url 'registerApp:register' %}">Create Account</a>
-      </div>
-      <input type="submit" value="Submit!">
-    </form>
-
-    <div class="message">
-      {% if messages %}
-        {% for message in messages %}
-          <p class="{{ message.tags }}">
-            {% if 'successfully' in message.tags %}
-              {{ message }}
-            {% else %}
-              {{ message }}
-            {% endif %}
-          </p>
-        {% endfor %}
-      {% endif %}
+            {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+            {% endfor %}
+      
+        {% endif %}
+            <div class="card-text">
+                <!--
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">Incorrect username or password.</div> -->
+                <form method="post" >
+                    {% csrf_token %}
+                    <!-- to error: add class "has-danger" -->
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Username</label>
+                        <input type="text" name="username" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <a href="{% url 'password_reset' %}" style="float:right;font-size:12px;">Forgot Password</a>
+                        <input type="password" name="password" class="form-control form-control-sm" id="exampleInputPassword1">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                    
+                    <div class="sign-up">
+                        Don't have an account? <a href="{% url 'registerApp:register' %}">Create One</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-</body>
-</html>
+    </div>
+    
+
+    {% endblock %}

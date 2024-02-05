@@ -5,8 +5,11 @@ from . import views
 app_name = 'registerApp'
 
 urlpatterns = [
-    path('', views.userLogin, name="login"),
+    path('', views.landing, name="landing"), 
+    path('login/', views.userLogin, name="login"),
     path('register/', views.register, name="register"),
+    # path('activate/<uidb64>/<token>', views.activate, name='activate'),
+
     path('logout/', views.userLogout, name="logout"),
     # path('book_search/', views.book_search, name='book_search'),
     path('add_to_readlist/<str:title>/', views.add_to_readlist, name='add_to_readlist'),
@@ -19,6 +22,11 @@ urlpatterns = [
     path('profile/update/', views.profile_update, name='profile_update'),
     path('index/', views.index, name='index'),
     path('book/<str:isbn>/', views.book_detail, name='book_detail'),
+    path('token/' , views.token_send , name="token_send"),
+    path('success/' , views.success , name='success'),
+    path('verify/<auth_token>/' , views.verify , name="verify"),
+    path('error/' , views.error_page , name="error")
+    
 ]
 
 

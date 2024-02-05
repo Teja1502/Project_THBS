@@ -1,102 +1,243 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 from django.http import JsonResponse
 from .forms import UserProfileForm
-import requests
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .models import Readlist, Favourites, UserProfile
-# from .forms import ReadlistForm, FavouritesForm
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction 
 import json
-import re
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.models import User
+from .models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import UserProfile  # Assuming UserProfile is defined in your models
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.conf import settings
+from registerApp.models import Profile
+from django.shortcuts import redirect, render
+from django.contrib.auth.models import User
+from django.contrib import messages
+from .models import *
+from django.core.mail import send_mail
+import uuid
+from django.contrib.auth import authenticate,login
+from django.contrib.auth.decorators import login_required
+
 
 
 
 def userLogin(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        pass1 = request.POST['pass1']
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-        myUser = authenticate(request, username=username, password=pass1)
+        user_obj = User.objects.filter(username = username).first()
+        if user_obj is None:
+            messages.success(request, 'User not found.')
+            return redirect('registerApp:login')
+        
+        
+        profile_obj = Profile.objects.filter(user = user_obj ).first()
 
-        if myUser is not None:
-            login(request, myUser)
-            return redirect('registerApp:index')
-        else:
-            messages.error(request, "Invalid username or password. Please try again.")
-            return render(request, 'registerApp/userLogin.html')
+        if not profile_obj.is_verified:
+            messages.success(request, 'Profile is not verified check your mail.')
+            return redirect('registerApp:login')
 
-   
-    signup_success_message = request.session.pop('signup_success_message', None)
-    if signup_success_message:
-        messages.success(request, signup_success_message, extra_tags='successfully')
+        user = authenticate(username = username , password = password)
+        if user is None:
+            messages.success(request, 'Wrong password.')
+            return redirect('registerApp:login')
+        
+        login(request , user)
+        return redirect('registerApp:index')
 
-    return render(request, 'registerApp/userLogin.html')
+    return render(request , 'registerApp/userLogin.html')
 
 
-def is_valid_username(username):
-    # Check if the username contains only alphanumeric characters and underscores
-    return re.match(r'^[a-zA-Z0-9_]+$', username) is not None
+
+
+# def register(request):
+
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+#         print(password)
+
+#         try:
+#             if User.objects.filter(username = username).first():
+#                 messages.success(request, 'Username is taken.')
+#                 return redirect('registerApp:register')
+
+#             if User.objects.filter(email = email).first():
+#                 messages.success(request, 'Email is taken.')
+#                 return redirect('registerApp:register')
+            
+#             user_obj = User(username = username , email = email)
+#             user_obj.set_password(password)
+#             user_obj.save()
+#             auth_token = str(uuid.uuid4())
+#             profile_obj = Profile.objects.create(user = user_obj , auth_token = auth_token)
+#             profile_obj.save()
+#             send_mail_after_registration(email , auth_token)
+#             return redirect('registerApp:token')
+
+#         except Exception as e:
+#             print(e)
+
+
+#     return render(request , 'registerApp/userRegister.html')
+
+
+# def register(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+        
+        
+
+#         try:
+#             if User.objects.filter(username=username).first():
+#                 messages.success(request, 'Username is taken.')
+#                 return redirect('registerApp:register')
+
+#             if User.objects.filter(email=email).first():
+#                 messages.success(request, 'Email is taken.')
+#                 return redirect('registerApp:register')
+
+#             user_obj = User(username=username, email=email)
+#             user_obj.set_password(password)
+#             user_obj.save()
+            
+            
+
+#             auth_token = str(uuid.uuid4())
+            
+#             user_profile = UserProfile.objects.create(user=user_obj, username=username, email=email, location=request.POST.get('location'))
+#             user_profile.save()
+
+#             # Create UserProfile instance and link it to the User instance
+#             # user_profile = UserProfile.objects.create(user=user_obj, username=username, email=email)
+#             # user_profile.save()
+
+#             profile_obj = Profile.objects.create(user=user_obj, auth_token=auth_token)
+#             profile_obj.save()
+
+#             send_mail_after_registration(email, auth_token)
+#             return redirect('registerApp:token')
+
+#         except Exception as e:
+#             print(e)
+
+#     return render(request, 'registerApp/userRegister.html')
 
 
 def register(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        fname = request.POST['fname']
-        lname = request.POST['lname']
-        email = request.POST['email']
-        pass1 = request.POST['pass1']
-        pass2 = request.POST['pass2']
-        location = request.POST['location']
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
 
-        # Check if passwords match
-        if pass1 != pass2:
-            messages.error(request, "Passwords do not match. Please enter matching passwords.")
-            return render(request, 'registerApp/userRegister.html')
+        try:
+            if User.objects.filter(username=username).first():
+                messages.success(request, 'Username is taken.')
+                return redirect('registerApp:register')
 
-        if not is_valid_username(username):
-            messages.error(request, "Invalid username. Only alphanumeric characters and '_' are allowed.")
-            return render(request, 'registerApp/userRegister.html')
+            if User.objects.filter(email=email).first():
+                messages.success(request, 'Email is taken.')
+                return redirect('registerApp:register')
 
-        # Check if username already exists
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists. Please choose a different username.")
-            return render(request, 'registerApp/userRegister.html')
+            user_obj = User(username=username, email=email, first_name=first_name, last_name=last_name)
+            user_obj.set_password(password)
+            user_obj.save()
 
-        # Check if email already exists
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "An account with this email already exists. Please use a different email.")
-            return render(request, 'registerApp/userRegister.html')
+            auth_token = str(uuid.uuid4())
 
-        # Create user and profile
-        myUser = User.objects.create_user(username=username, password=pass1)
-        myUser.first_name = fname
-        myUser.last_name = lname
-        myUser.email = email
-        myUser.location = location
-        myUser.save()
-        UserProfile.objects.create(user=myUser, username=username, first_name=fname, last_name=lname, email=email, location=location)
+            user_profile = UserProfile.objects.create(user=user_obj, username=username, email=email, location=request.POST.get('location'), first_name=first_name, last_name=last_name)
+            user_profile.save()
 
-        signup_success_message = "You have been registered successfully. Please login."
-        request.session['signup_success_message'] = signup_success_message
+            profile_obj = Profile.objects.create(user=user_obj, auth_token=auth_token)
+            profile_obj.save()
 
-        return redirect('registerApp:login')
+            send_mail_after_registration(email, auth_token)
+            return redirect('registerApp:token')
+
+        except Exception as e:
+            print(e)
 
     return render(request, 'registerApp/userRegister.html')
 
-     
+
+def success(request):
+    return render(request , 'registerApp/success.html')
+
+
+def token_send(request):
+    return render(request , 'registerApp/token_send.html')
+
+
+
+def verify(request , auth_token):
+    try:
+        profile_obj = Profile.objects.filter(auth_token = auth_token).first()
+    
+
+        if profile_obj:
+            if profile_obj.is_verified:
+                messages.success(request, 'Your account is already verified.')
+                return redirect('registerApp:login')
+            profile_obj.is_verified = True
+            profile_obj.save()
+            messages.success(request, 'Your account has been verified.')
+            return redirect('registerApp:login')
+        else:
+            return redirect('registerApp:error')
+    except Exception as e:
+        print(e)
+        return redirect('/')
+
+def error_page(request):
+    return  render(request , 'registerApp/error.html')
+
+
+
+def send_mail_after_registration(email , token):
+    subject = 'Your accounts need to be verified'
+    message = f'Hi paste the link to verify your account http://127.0.0.1:8000/verify/{token}'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    send_mail(subject, message , email_from ,recipient_list )
+
+
+
 
 def userLogout(request):
     logout(request)
-    return redirect('registerApp:login')
+    return redirect('registerApp:landing')
 
+
+
+def landing(request):
+    return render(request, 'registerApp/landing.html')
+
+
+def pass_reset(request):
+    return render(request, 'registerApp/pass_reset.html')
 
 
 
@@ -260,32 +401,4 @@ def book_detail(request, isbn):
     return render(request, 'bookstore/book.html', {'isbn': isbn})
 
 
-# @login_required
-# def profile_update(request):
-#     user_profile = get_object_or_404(UserProfile, user=request.user)
 
-#     if request.method == 'POST':
-#         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Profile updated successfully.')
-#             return redirect('registerApp:profile')
-#         else:
-#             print(form.errors)  # Print form errors to the console
-#     else:
-#         form = UserProfileForm(instance=user_profile)
-
-#     return render(request, 'registerApp/profile_update.html', {'form': form, 'user_profile': user_profile})
-
-
-
-
-
-
-
-
-
-
-
-
-    
