@@ -18,6 +18,7 @@ WORKDIR /app
 COPY --from=builder /app /app
 COPY . .
 RUN pip3 install django
+RUN pip3 install mysqlclient
 RUN python manage.py migrate
 
 # Set the entrypoint
