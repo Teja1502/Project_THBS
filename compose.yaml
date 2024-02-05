@@ -1,0 +1,31 @@
+version: '3.8'
+ 
+services:
+  mysql:
+    image: mysql:latest
+    networks:
+      - mynetwork
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=django_testing
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+    restart: always
+ 
+  django_app:
+    build:
+      context: .
+    ports:
+      - "8002:8002"
+    environment:
+      SQLALCHEMY_DATABASE_URI: 'mysql://admin:admin@mysql/django_testing'
+    networks:
+      - mynetwork
+    depends_on:
+      - mysql
+ 
+networks:
+  mynetwork:
+    driver: bridge
