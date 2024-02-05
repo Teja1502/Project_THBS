@@ -19,7 +19,8 @@ FROM python:3.10.12-slim
 WORKDIR /app
 COPY --from=builder /app /app
 COPY . .
-RUN pip3 install django
+RUN pip3 install -r requirements.txt
+# RUN pip3 install django
 # RUN pip3 install mysqlclient
 # RUN python manage.py migrate
 
