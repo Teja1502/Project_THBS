@@ -28,32 +28,35 @@
 # # Set the entrypoint
 # ENTRYPOINT [ "python", "manage.py", "runserver", "0.0.0.0:8002" ]
 # Use an official Python runtime as a parent image
+# First stage: Builder
 FROM python:3.9 AS builder
- 
+
 # Set the working directory in the container
 WORKDIR /app
- 
-# Copy the requirements file into the container at /django
-COPY requirements.txt requirements.txt
- 
+
+# Copy the requirements file into the container at /app
+COPY requirements.txt .
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip && \
-pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r requirements.txt
- 
-# Second stage of the multi-stage build
+    pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r requirements.txt
+
+# Second stage: Final
 FROM python:3.9-slim
- 
+
 # Set the working directory in the container
 WORKDIR /app
- 
+
 # Copy the dependencies and application code from the builder stage
 COPY --from=builder /wheels /wheels
 COPY . .
- 
+
 # Install any dependencies from the wheels directory
 RUN pip install --no-cache /wheels/*
- 
-# Make port 8002 available to the world outside this container
- 
+
+# Expose port 8002
+EXPOSE 8002
+
 # Define the command to run your application
-ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8002"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8002"]
+
