@@ -30,6 +30,7 @@ html5lib==1.1
 idna==3.4
 lxml==4.9.3
 mysql-connector-python==8.0.32
+mysqlclient==2.2.0
 node==1.2.1
 nodejs==0.1.1
 npm==0.1.1
