@@ -98,7 +98,8 @@ def register(request):
             profile_obj = Profile.objects.create(user=user_obj, auth_token=auth_token)
             profile_obj.save()
 
-            send_mail_after_registration(email, auth_token)
+            domain = request.build_absolute_uri('/')[:-1]
+            send_mail_after_registration(email, auth_token, domain)
             return redirect('registerApp:token')
 
         except Exception as e:
@@ -140,9 +141,9 @@ def error_page(request):
 
 
 
-def send_mail_after_registration(email , token):
+def send_mail_after_registration(email , token, domain):
     subject = 'Your accounts need to be verified'
-    message = f'Hi paste the link to verify your account http://127.0.0.1:8000/verify/{token}'
+    message = f'Hi paste the link to verify your account {domain}/verify/{token}'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message , email_from ,recipient_list )
