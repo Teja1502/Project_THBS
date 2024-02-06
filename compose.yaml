@@ -9,7 +9,7 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: django_testing
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
