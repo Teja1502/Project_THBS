@@ -1,58 +1,37 @@
 version: '3.8'
- 
+
 services:
 
   mysql:
-
     image: mysql:latest
-
     networks:
-
       - mynetwork
-
     volumes:
-
       - ./mysql:/var/lib/mysql
-
     environment:
-
-      - MYSQL_ROOT_PASSWORD=root
-
-      - MYSQL_DATABASE=django_testing
-
-      - MYSQL_USER=admin
-
-      - MYSQL_PASSWORD=admin
-
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: django_testing
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
     restart: always
- 
+
   django_app:
-
     build:
-
       context: .
-
     ports:
-
       - "8002:8002"
-
     environment:
-
-      SQLALCHEMY_DATABASE_URI: 'mysql://admin:admin@mysql/django_testing'
-
+      # Use DJANGO_DB_HOST instead of SQLALCHEMY_DATABASE_URI
+      DJANGO_DB_HOST: mysql  # Use the service name as the hostname
+      DJANGO_DB_PORT: 3306  # Default MySQL port
+      DJANGO_DB_NAME: django_testing
+      DJANGO_DB_USER: admin
+      DJANGO_DB_PASSWORD: admin
     networks:
-
       - mynetwork
-
     depends_on:
-
       - mysql
- 
+
 networks:
-
   mynetwork:
-
     driver: bridge
-
-
-
