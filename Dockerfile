@@ -19,7 +19,7 @@ ENTRYPOINT [ "python", "manage.py","runserver","0.0.0.0:8002" ]
 # COPY . .
 # # EXPOSE 8000
 # ENTRYPOINT ["bash", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8002"]
-# has context menu
+# # has context menu
 
 # Stage 1: Build Stage
 # FROM python:3.10.12 as builder
