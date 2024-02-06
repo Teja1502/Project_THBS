@@ -18,7 +18,7 @@ services:
     build:
       context: .
     ports:
-      - "8002:8002"
+      - "8000:8000"
     environment:
       SQLALCHEMY_DATABASE_URI: 'mysql://admin:admin@mysql/django_testing'
     networks:
