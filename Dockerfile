@@ -10,7 +10,7 @@ RUN pip3 install -r requirements.txt
 COPY . .
 
 # Run migrations and start the server
-CMD ["bash", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8002"]
+ENTRYPOINT ["bash", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8002"]
 
 # FROM python:3.10.12
 # WORKDIR /app
