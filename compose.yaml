@@ -1,37 +1,34 @@
-version: '3.8'
-
+version: "3.8"
 services:
-
+  backend:
+   image: django-image:latest
+   ports:
+     - "8000:8000"
+   depends_on:
+     - mysql
+   networks:
+     - mynetwork
+   environment:
+     - DB_ENGINE=django.db.backends.mysql
+     - DB_NAME=django_testing
+     - DB_USER=admin
+     - DB_PASSWORD=admin
+     - DB_HOST=mysql
+     - DB_PORT=3306
+   restart: always
   mysql:
-    image: mysql:latest
-    networks:
-      - mynetwork
-    volumes:
-      - ./mysql:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: django_testing
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
-    restart: always
-
-  django_app:
-    build:
-      context: .
-    ports:
-      - "8002:8002"
-    environment:
-      # Use DJANGO_DB_HOST instead of SQLALCHEMY_DATABASE_URI
-      DJANGO_DB_HOST: mysql  # Use the service name as the hostname
-      DJANGO_DB_PORT: 3306  # Default MySQL port
-      DJANGO_DB_NAME: django_testing
-      DJANGO_DB_USER: admin
-      DJANGO_DB_PASSWORD: admin
-    networks:
-      - mynetwork
-    depends_on:
-      - mysql
-
+   image: mysql:latest
+   networks:
+     - mynetwork
+   volumes:
+     - ./mysql:/var/lib/mysql
+   environment:
+     - MYSQL_ROOT_PASSWORD=root
+     - MYSQL_DATABASE=django_testing
+     - MYSQL_USER=admin
+     - MYSQL_PASSWORD=admin
+   restart: always
 networks:
   mynetwork:
-    driver: bridge
+   name: django-network
+   driver: bridge
