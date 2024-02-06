@@ -4,7 +4,7 @@ COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip
 RUN pip3 install -r requirements.txt
 COPY . .
-ENTRYPOINT [ "python", "manage.py", "runserver", "0.0.0.0:8002" ]
+ENTRYPOINT ["bash", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8002"]
 
 # Stage 1: Build Stage
 # FROM python:3.10.12 as builder
