@@ -1,49 +1,58 @@
 version: '3.8'
  
 services:
+
   mysql:
+
     image: mysql:latest
-    ports:
-      - "3306:3306"
+
     networks:
+
       - mynetwork
+
     volumes:
+
       - ./mysql:/var/lib/mysql
+
     environment:
+
       - MYSQL_ROOT_PASSWORD=root
+
       - MYSQL_DATABASE=django_testing
+
       - MYSQL_USER=admin
+
       - MYSQL_PASSWORD=admin
+
     restart: always
  
-  # phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin
-  #   networks:
-  #     - mynetwork
-  #   ports:
-  #     - "8081:80" # Map phpMyAdmin to port 8081
-  #   environment:
-  #     - PMA_ARBITRARY=1
-  #     - MYSQL_ROOT_PASSWORD=root
-  #     - MYSQL_USER=admin
-  #     - MYSQL_PASSWORD=admin
-  #     - MYSQL_DATABASE=django_testing
-  #   restart: always
-
   django_app:
+
     build:
+
       context: .
+
     ports:
+
       - "8002:8002"
+
     environment:
+
       SQLALCHEMY_DATABASE_URI: 'mysql://admin:admin@mysql/django_testing'
+
     networks:
+
       - mynetwork
+
     depends_on:
+
       - mysql
  
 networks:
+
   mynetwork:
+
     driver: bridge
+
 
 
