@@ -6,7 +6,7 @@
     <div class="global-container">
         <div class="card login-form">
         <div class="card-body">
-            <h3 class="card-title text-center">Register in to Django</h3>
+            <h3 class="card-title text-center">Register New User</h3>
             <div class="card-text">
                 {% if messages %}
                 
@@ -55,7 +55,7 @@
                     <button type="submit" class="btn btn-primary btn-block mt-2">Sign up</button>
                     
                     <div class="sign-up mt-2">
-                        Already have an account? <a href="{% url 'registerApp:login'%}">Sign in</a>
+                        Already have an account? <a href="{% url 'registerApp:login'%}">login</a>
                     </div>
                 </form>
             </div>
