@@ -24,6 +24,6 @@ RUN echo "from django.contrib.auth.models import User; \
     | python manage.py shell
 
 # Set the entrypoint to start the Django development server
-ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["bash", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
 
 
