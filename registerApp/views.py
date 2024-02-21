@@ -7,6 +7,7 @@ from .models import Readlist, Favourites, UserProfile
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction 
 import json
+import string
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -18,7 +19,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import UserProfile  # Assuming UserProfile is defined in your models
-
+import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
@@ -68,46 +69,14 @@ def userLogin(request):
 
 
 
-# def register(request):
-
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-#         print(password)
-
-#         try:
-#             if User.objects.filter(username = username).first():
-#                 messages.success(request, 'Username is taken.')
-#                 return redirect('registerApp:register')
-
-#             if User.objects.filter(email = email).first():
-#                 messages.success(request, 'Email is taken.')
-#                 return redirect('registerApp:register')
-            
-#             user_obj = User(username = username , email = email)
-#             user_obj.set_password(password)
-#             user_obj.save()
-#             auth_token = str(uuid.uuid4())
-#             profile_obj = Profile.objects.create(user = user_obj , auth_token = auth_token)
-#             profile_obj.save()
-#             send_mail_after_registration(email , auth_token)
-#             return redirect('registerApp:token')
-
-#         except Exception as e:
-#             print(e)
-
-
-#     return render(request , 'registerApp/userRegister.html')
-
 
 # def register(request):
 #     if request.method == 'POST':
 #         username = request.POST.get('username')
 #         email = request.POST.get('email')
 #         password = request.POST.get('password')
-        
-        
+#         first_name = request.POST.get('first_name')
+#         last_name = request.POST.get('last_name')
 
 #         try:
 #             if User.objects.filter(username=username).first():
@@ -118,20 +87,14 @@ def userLogin(request):
 #                 messages.success(request, 'Email is taken.')
 #                 return redirect('registerApp:register')
 
-#             user_obj = User(username=username, email=email)
+#             user_obj = User(username=username, email=email, first_name=first_name, last_name=last_name)
 #             user_obj.set_password(password)
 #             user_obj.save()
-            
-            
 
 #             auth_token = str(uuid.uuid4())
-            
-#             user_profile = UserProfile.objects.create(user=user_obj, username=username, email=email, location=request.POST.get('location'))
-#             user_profile.save()
 
-#             # Create UserProfile instance and link it to the User instance
-#             # user_profile = UserProfile.objects.create(user=user_obj, username=username, email=email)
-#             # user_profile.save()
+#             user_profile = UserProfile.objects.create(user=user_obj, username=username, email=email, location=request.POST.get('location'), first_name=first_name, last_name=last_name)
+#             user_profile.save()
 
 #             profile_obj = Profile.objects.create(user=user_obj, auth_token=auth_token)
 #             profile_obj.save()
@@ -145,6 +108,7 @@ def userLogin(request):
 #     return render(request, 'registerApp/userRegister.html')
 
 
+
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -152,29 +116,78 @@ def register(request):
         password = request.POST.get('password')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
+        location = request.POST.get('location')
+
+        # Check if all fields are entered
+        missing_fields = []
+        if not username:
+            missing_fields.append('Username')
+        if not email:
+            missing_fields.append('Email')
+        if not password:
+            missing_fields.append('Password')
+        if not first_name:
+            missing_fields.append('First Name')
+        if not last_name:
+            missing_fields.append('Last Name')
+        if not location:
+            missing_fields.append('Location')
+
+        if missing_fields:
+            messages.error(request, f'Please fill in all the fields: {", ".join(missing_fields)}.')
+            return redirect('registerApp:register')
+
+        # Check username format
+        if not re.match(r'^[a-zA-Z0-9_]+$', username):
+            messages.error(request, 'Username should only contain alphanumeric characters and underscore.')
+            return redirect('registerApp:register')
+
+        # Check first name format
+        if not first_name.isalpha():
+            messages.error(request, 'First name should only contain characters.')
+            return redirect('registerApp:register')
+
+        # Check last name format
+        if not last_name.isalpha():
+            messages.error(request, 'Last name should only contain characters.')
+            return redirect('registerApp:register')
+
+        # Check password complexity
+        if len(password) < 8:
+            messages.error(request, 'Your password must contain at least 8 characters.')
+            return redirect('registerApp:register')
+        elif not any(char.isdigit() for char in password):
+            messages.error(request, 'Your password must contain at least one numeric character.')
+            return redirect('registerApp:register')
+        elif not any(char in string.punctuation for char in password):
+            messages.error(request, 'Your password must contain at least one special character.')
+            return redirect('registerApp:register')
+        elif any(field.lower() in password.lower() for field in [username]):
+            messages.error(request, 'Your password can’t be too similar to your username')
+            return redirect('registerApp:register')
 
         try:
-            if User.objects.filter(username=username).first():
-                messages.success(request, 'Username is taken.')
+            # Check if username already exists
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Username is already in use.')
                 return redirect('registerApp:register')
 
-            if User.objects.filter(email=email).first():
-                messages.success(request, 'Email is taken.')
+            # Check if email already exists
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'Email is already registered.')
                 return redirect('registerApp:register')
 
-            user_obj = User(username=username, email=email, first_name=first_name, last_name=last_name)
-            user_obj.set_password(password)
-            user_obj.save()
-
+            user_obj = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
             auth_token = str(uuid.uuid4())
 
-            user_profile = UserProfile.objects.create(user=user_obj, username=username, email=email, location=request.POST.get('location'), first_name=first_name, last_name=last_name)
+            user_profile = UserProfile.objects.create(user=user_obj, username=username, email=email, location=location, first_name=first_name, last_name=last_name)
             user_profile.save()
 
             profile_obj = Profile.objects.create(user=user_obj, auth_token=auth_token)
             profile_obj.save()
 
-            send_mail_after_registration(email, auth_token)
+            domain = request.build_absolute_uri('/')[:-1]
+            send_mail_after_registration(email, auth_token, domain)
             return redirect('registerApp:token')
 
         except Exception as e:
@@ -216,9 +229,9 @@ def error_page(request):
 
 
 
-def send_mail_after_registration(email , token):
+def send_mail_after_registration(email , token, domain):
     subject = 'Your accounts need to be verified'
-    message = f'Hi paste the link to verify your account http://127.0.0.1:8000/verify/{token}'
+    message = f'Hi paste the link to verify your account {domain}/verify/{token}'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message , email_from ,recipient_list )
