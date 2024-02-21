@@ -114,6 +114,7 @@ def register(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         location = request.POST.get('location')
@@ -126,6 +127,8 @@ def register(request):
             missing_fields.append('Email')
         if not password:
             missing_fields.append('Password')
+        if not confirm_password:
+            missing_fields.append('Confirm Password')
         if not first_name:
             missing_fields.append('First Name')
         if not last_name:
@@ -135,6 +138,10 @@ def register(request):
 
         if missing_fields:
             messages.error(request, f'Please fill in all the fields: {", ".join(missing_fields)}.')
+            return redirect('registerApp:register')
+
+        if password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
             return redirect('registerApp:register')
 
         # Check username format
