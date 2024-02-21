@@ -17,7 +17,7 @@ COPY . .
 
 # Run migrations and create superuser
 RUN python manage.py migrate && \
-    echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpassword')" | python manage.py shell
+    python manage.py createsuperuser --noinput --username admin --email admin@example.com --password adminpassword
 
 # Set the entrypoint to start the Django development server
 ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8000"]
