@@ -15,10 +15,15 @@ RUN pip3 install -r requirements.txt
 # Copy the rest of the application code
 COPY . . 
 
-# Run migrations and create superuser
-RUN python manage.py migrate && \
-    python manage.py createsuperuser --noinput --username admin --email admin@example.com --password adminpassword
+# Run migrations
+RUN python manage.py migrate
+
+# Create superuser
+RUN echo "from django.contrib.auth.models import User; \
+    User.objects.create_superuser('Teja', '0000')" \
+    | python manage.py shell
 
 # Set the entrypoint to start the Django development server
 ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
 
