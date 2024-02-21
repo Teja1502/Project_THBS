@@ -4,16 +4,16 @@
 <head>
   <title>Online Bookstore Management</title>
   <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  {% comment %} <meta http-equiv="X-UA-Compatible" content="IE=edge" /> {% endcomment %}
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, shrink-to-fit=no" />
   <link rel="stylesheet" href="{% static 'registerApp/css/index.css' %}">
-  <meta name="description" content="Bookstore" />
+  {% comment %} <meta name="description" content="Bookstore" /> {% endcomment %}
   <link rel="icon" href="{% static 'registerApp/images/favicon.ico' %}" />
   <!-- Web Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,900&display=swap" rel="stylesheet" />
   <!-- Meta Tags -->
-  <meta itemprop="name" content="Books" />
-  <meta itemprop="description" content="Bookstore" />
+  {% comment %} <meta itemprop="name" content="Books" /> {% endcomment %}
+  {% comment %} <meta itemprop="description" content="Bookstore" /> {% endcomment %}
   <meta name="theme-color" content="#ffffff" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="application-name" content="Books" />
@@ -23,12 +23,12 @@
   <meta name="msapplication-TileColor" content="#ffffff" />
   <meta name="msapplication-tap-highlight" content="no" />
   <!-- Open Graph Tags -->
-  <meta property="og:site_name" content="Books" />
+  {% comment %} <meta property="og:site_name" content="Books" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Books" />
-  <meta property="og:description" content="Find books from Google Play Books" />
+  <meta property="og:description" content="Find books from Google Play Books" /> {% endcomment %}
   <!-- Service Worker Script -->
-  <script>
+  {% comment %} <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
         navigator.serviceWorker
@@ -41,28 +41,45 @@
           });
       });
     }
-  </script>
+  </script> {% endcomment %}
 </head>
 <body>
   <div class="background"></div>
   <nav class="navbar">
-    <div class="logo">
+    <div class="logo">  
       <a href="{% url 'registerApp:index' %}">BookStore</a>
     </div>
-    <div class="nav-links">
+    <div class="menu-nav-links">
+      <a href="" class="cls-img">&#x2715;</a>
       <a href="{% url 'registerApp:index' %}">Home</a>
       <a href="{% url 'registerApp:readlist' %}">Readlist</a>
       <a href="{% url 'registerApp:favourites' %}">Favourites</a>
       <a href="{% url 'registerApp:profile' %}">Profile</a>
       <a href="{% url 'registerApp:logout' %}">Logout</a>
     </div>
+    <div class="nav-links">
+      <a href=""></a>
+      <a href="{% url 'registerApp:index' %}">Home</a>
+      <a href="{% url 'registerApp:readlist' %}">Readlist</a>
+      <a href="{% url 'registerApp:favourites' %}">Favourites</a>
+      <a href="{% url 'registerApp:profile' %}">Profile</a>
+      <a href="{% url 'registerApp:logout' %}">Logout</a>
+    </div>
+    <div class="hamburger" onclick=showSidebar()>&#9776;</div>
   </nav>
+
+  <script>
+    function showSidebar () {
+      const sidebar = document.querySelector('.menu-nav-links')
+      sidebar.style.display = 'flex';
+    }
+    </script>
   <aside>
     <nav>
       <ul>
         <li class="subhead">DISCOVER</li>
-        <li><a class="nav scrolltoview current" href="#search"><span class="icon"></span>Search</a></li>
-        <li><a class="nav scrolltoview" href="#foryou"><span class="icon"></span>For you</a></li>
+        <li><a class="nav scrolltoview current" href="#bestsellers"><span class="icon"></span>Bestsellers</a></li>
+        <li><a class="nav scrolltoview" href="#topAuthors"><span class="icon"></span>Top authors</a></li>
         <li class="subhead">Categories</li>
         <li><a class="nav scrolltoview" href="#fiction"><span class="icon"></span>Fiction</a></li>
         <li><a class="nav scrolltoview" href="#poetry"><span class="icon"></span>Poetry</a></li>
@@ -87,7 +104,7 @@
         </div>
       </section>
       <div id="foryou">
-        <section id="inspirational" class="results">
+        <section id="bestsellers" class="results">
           <div class="flex">
             <h1 class="section-title">Bestsellers</h1>
             <div>
@@ -101,7 +118,7 @@
           <div class="fade left"></div>
           <div class="fade right"></div>
         </section>
-        <section id="authors" class="results">
+        <section id="topAuthors" class="results">
           <div class="flex">
             <h1 class="section-title">Top authors</h1>
             <div>
@@ -199,6 +216,8 @@
       </div>
     </div>
   </main>
-  <script src="{% static 'registerApp/js/index.js' %}"></script>
+  <script src="{% static 'registerApp/js/index.js' %}">
+    
+  </script>
 </body>
 </html>

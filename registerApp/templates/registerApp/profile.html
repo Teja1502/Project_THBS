@@ -118,7 +118,7 @@
         .user-fav {
             display: flex;
             justify-content: space-around;
-            margin-top: 30px;
+            margin-top: 50px;
         }
 
         .user-fav .userReadlist,
@@ -150,6 +150,7 @@
             color: #fff;
             cursor: pointer;
             transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+            margin-top: 50px;
         }
 
         .updateButton button:hover {
@@ -188,10 +189,12 @@
                 padding: 20px;
                 margin: -50px auto 20px;
             }
+
     
             .user-details,
             .user-fav {
-                flex-direction: column;
+                flex-direction: row;
+                flex-wrap: wrap;
             }
     
             .user-fav .userReadlist,
@@ -222,10 +225,10 @@
             {% else %}
             <img src="{% static 'registerApp/images/noprofil.jpg' %}" alt="">
             {% endif %}
-            <div class="round">
+            {% comment %} <div class="round">
                 <input type="file" name="profile_picture" id="profilePictureInput" onchange="previewProfilePicture()">
                 <i class="fas fa-camera" style="color: #fff;"></i>
-            </div>
+            </div> {% endcomment %}
         </div>
 
         <div class="profile-details">

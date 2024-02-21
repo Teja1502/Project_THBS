@@ -36,6 +36,11 @@
             color: #007bff;
           }
 
+          .navbar .hamburger {
+            display: none;
+            cursor: pointer;
+          }
+
           .logo {
             padding: 0 32px;
             font-weight: 900;
@@ -107,21 +112,113 @@
             border-radius: 3px;
             cursor: pointer;
         }
+
+        .menu-nav-links > a:nth-child(1) {
+            text-decoration: none;
+            margin-left: auto;
+         }
+
+  .menu-nav-links {
+    /* display: none;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 250px;
+    width: 250px;
+    z-index: 999;
+    background-color: white;
+    box-shadow: -10px 0 10px  rgb(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+        @media (max-width: 768px) {
+            .navbar {
+                width: 100%;
+                position: fixed;
+                height: 50px;
+                display: flex;
+              }
+          
+              .nav-links {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+              }
+          
+              .nav-links a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+              }
+          
+              .nav-links.show {
+                display: flex;
+              }
+          
+              .navbar .hamburger {
+                display: block;
+                height: 35px;
+                width: 35px;
+                padding-right: 25px;
+              }
+
+              h1 {
+                margin-top: 100px;
+              }
+
+              .logo {
+                padding: 0px;
+              }
+        }
+
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <div class="logo">
-            <a href="{% url 'registerApp:index' %}">BookStore</a>
+        <div class="logo">  
+          <a href="{% url 'registerApp:index' %}">BookStore</a>
         </div>
-        <div class="nav-links">
-          <a href="{% url 'registerApp:index' %}">Home</a>
-          <a href="{% url 'registerApp:favourites' %}">Favourites</a>
-          <a href="{% url 'registerApp:profile' %}">Profile</a>
-          <a href="{% url 'registerApp:logout' %}">Logout</a>
-        </div>
+        <div class="menu-nav-links">
+            <a href="" class="cls-img">&#x2715;</a>
+            <a href="{% url 'registerApp:index' %}">Home</a>
+            <a href="{% url 'registerApp:readlist' %}">Readlist</a>
+            <a href="{% url 'registerApp:favourites' %}">Favourites</a>
+            <a href="{% url 'registerApp:profile' %}">Profile</a>
+            <a href="{% url 'registerApp:logout' %}">Logout</a>
+          </div>
+          <div class="nav-links">
+            <a href=""></a>
+            <a href="{% url 'registerApp:index' %}">Home</a>
+            <a href="{% url 'registerApp:readlist' %}">Readlist</a>
+            <a href="{% url 'registerApp:favourites' %}">Favourites</a>
+            <a href="{% url 'registerApp:profile' %}">Profile</a>
+            <a href="{% url 'registerApp:logout' %}">Logout</a>
+          </div>
+        <div class="hamburger" onclick=showSidebar()>&#9776;</div>
       </nav>
+    
+      <script>
+        function showSidebar () {
+            const sidebar = document.querySelector('.menu-nav-links')
+            sidebar.style.display = 'flex';
+          }
+        </script>
     <h1>Readlist</h1>
 
     {% if books %}

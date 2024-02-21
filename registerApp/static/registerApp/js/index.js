@@ -22,7 +22,7 @@ const drawChartBook = async (subject, startIndex = 0) => {
   let cbookContainer = document.querySelector(`.${subject}`);
   cbookContainer.innerHTML = `<div class='prompt'><div class="loader"></div></div>`;
   
-  const cdata = await getBooks(`subject:${subject}&startIndex=${startIndex}&maxResults=10`);
+  const cdata = await getBooks(`subject:${subject}&startIndex=${startIndex}&maxResults=6`);
   
   if (cdata.error) {
     cbookContainer.innerHTML = `<div class='prompt'>ツ Limit exceeded! Try after some time</div>`;
@@ -43,11 +43,12 @@ const drawChartBook = async (subject, startIndex = 0) => {
             <div class='info' onclick='updateFilter(this,"subject");' style='background-color: ${getRandomColor()};'>
               ${volumeInfo.categories === undefined ? "Others" : volumeInfo.categories}
             </div>
+            <div class='actions'>
+            <button class='book-readlist-btn' onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
+            <button class='book-favorites-btn' onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
           </div>
-          <div class='actions'>
-            <button onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
-            <button onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
           </div>
+
         </div>`;
     }).join("");
   }
@@ -77,11 +78,12 @@ const drawListBook = async () => {
               <div class='info' onclick='updateFilter(this,"subject");' style='background-color: ${getRandomColor()};'>
                 ${volumeInfo.categories === undefined ? "Others" : volumeInfo.categories}
               </div>
+              <div class='actions'>
+              <button class='book-readlist-btn' onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
+              <button class='book-favorites-btn' onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
             </div>
-            <div class='actions'>
-              <button onclick='handleReadlistButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Readlist</button>
-              <button onclick='handleFavouritesButtonClick("${volumeInfo.title}", "${volumeInfo.authors}", "${volumeInfo.previewLink}", "${extractThumbnail(volumeInfo)}")'>Favourites</button>
             </div>
+            
           </div>`;
       }).join("");
     }
@@ -340,3 +342,9 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = "{% url 'registerApp:index' %}";
   }
 });
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   document.querySelector('.hamburger').addEventListener('click', function() {
+//     document.querySelector('.nav-links').classList.toggle('show');
+//   });
+// });

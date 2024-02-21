@@ -258,7 +258,11 @@ def add_to_readlist(request, title):
                 'thumbnail': thumbnail,
             }
 
-            Readlist.objects.get_or_create(user=user, book=book)
+            existing_entry = Readlist.objects.filter(user=user, book=book).first()
+            if existing_entry:
+                return JsonResponse({'message': 'Book is already in the Readlist'})
+            
+            Readlist.objects.create(user=user, book=book)
 
             return JsonResponse({'message': 'Book added to Readlist successfully'})
         except json.JSONDecodeError:
@@ -283,7 +287,12 @@ def add_to_favourites(request, title):
                 'thumbnail': thumbnail,
             }
 
-            Favourites.objects.get_or_create(user=user, book=book)
+            # Check if the book is already in Favourites
+            existing_entry = Favourites.objects.filter(user=user, book=book).first()
+            if existing_entry:
+                return JsonResponse({'message': 'Book is already in Favourites'})
+            
+            Favourites.objects.create(user=user, book=book)
 
             return JsonResponse({'message': 'Book added to Favourites successfully'})
         except json.JSONDecodeError:
