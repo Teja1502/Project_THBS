@@ -74,15 +74,21 @@ WSGI_APPLICATION = 'userRegistration.wsgi.application'
 
 # DATABASES = {
 #     'default': {
-
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'django_testing',  # Should match the MYSQL_DATABASE in docker-compose.yml
-#         'USER': 'admin',           # Should match the MYSQL_USER in docker-compose.yml
-#         'PASSWORD': 'admin',       # Should match the MYSQL_PASSWORD in docker-compose.yml
-#         'HOST': 'mysql',           # Should match the service name in docker-compose.yml
-#         'PORT': '3306',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+DATABASES = {
+    'default': {
+
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_NAME'),  # Should match the MYSQL_DATABASE in docker-compose.yml
+        'USER': config('DB_USER'),           # Should match the MYSQL_USER in docker-compose.yml
+        'PASSWORD': config('DB_PASSWORD'),       # Should match the MYSQL_PASSWORD in docker-compose.yml
+        'HOST': config('DB_HOST'),           # Should match the service name in docker-compose.yml
+        'PORT': '3306',
+    }
+}
 
 
 # Password validation
