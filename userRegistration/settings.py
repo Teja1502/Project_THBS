@@ -2,6 +2,8 @@
 
 from pathlib import Path
 import os
+
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_PATH = os.path.join(BASE_DIR,'templates')
@@ -12,10 +14,10 @@ TEMPLATE_PATH = os.path.join(BASE_DIR,'templates')
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q@*h6hn%1a8ov@xarq*s9q5jg2_06q_83=w$t09e0$4hnjvuk2'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = ["*"]
 
@@ -80,10 +82,10 @@ DATABASES = {
 #     'default': {
 
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'django_testing',  # Should match the MYSQL_DATABASE in docker-compose.yml
-#         'USER': 'admin',           # Should match the MYSQL_USER in docker-compose.yml
-#         'PASSWORD': 'admin',       # Should match the MYSQL_PASSWORD in docker-compose.yml
-#         'HOST': 'mysql',           # Should match the service name in docker-compose.yml
+#         'NAME': config('DB_NAME'),  # Should match the MYSQL_DATABASE in docker-compose.yml
+#         'USER': config('DB_USER'),           # Should match the MYSQL_USER in docker-compose.yml
+#         'PASSWORD': config('DB_PASSWORD'),       # Should match the MYSQL_PASSWORD in docker-compose.yml
+#         'HOST': config('DB_HOST'),           # Should match the service name in docker-compose.yml
 #         'PORT': '3306',
 #     }
 # }
@@ -122,13 +124,13 @@ USE_I18N = True
 USE_TZ = True
 
 
-EMAIL_FROM_USER = 'samanthavadateja1522@gmail.com'
+EMAIL_FROM_USER = config('EMAIL_FROM_USER')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'samanthavadateja1522@gmail.com'
-EMAIL_HOST_PASSWORD = 'ivvl ripr lmhu dlvi'
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 
 
