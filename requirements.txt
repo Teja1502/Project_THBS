@@ -78,6 +78,7 @@ xhtml2pdf==0.2.13
 zope.component==6.0
 zope.deferredimport==5.0
 zope.deprecation==5.0
+python-decouple==3.8
 zope.event==5.0
 zope.hookable==6.0
 zope.interface==6.1
