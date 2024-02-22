@@ -11,30 +11,16 @@ import string
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import UserProfile
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import UserProfile  # Assuming UserProfile is defined in your models
 import re
-from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.conf import settings
 from registerApp.models import Profile
-from django.shortcuts import redirect, render
-from django.contrib.auth.models import User
-from django.contrib import messages
 from .models import *
 from django.core.mail import send_mail
 import uuid
-from django.contrib.auth import authenticate,login
-from django.contrib.auth.decorators import login_required
+import random
+from .models import Readlist
+from itertools import zip_longest
 
 
 
@@ -323,25 +309,36 @@ def add_to_favourites(request, title):
 
 
 
+
+
 @login_required
 def readlist(request):
     user = request.user
     readlist_books = Readlist.objects.filter(user=user).values('book')
-
- 
     books = [book['book'] for book in readlist_books]
 
-    return render(request, 'registerApp/readlist.html', {'books': books})
+    # Generate random colors for each book
+    book_colors = ['#%06x' % random.randint(0, 0xFFFFFF) for _ in books]
+
+    # Zip books and book_colors together, filling missing colors with None
+    zipped_data = zip_longest(books, book_colors)
+
+    return render(request, 'registerApp/readlist.html', {'zipped_data': zipped_data})
+
 
 @login_required
 def favourites(request):
     user = request.user
     favourites_books = Favourites.objects.filter(user=user).values('book')
-
-   
     books = [book['book'] for book in favourites_books]
 
-    return render(request, 'registerApp/favourites.html', {'books': books})
+    # Generate random colors for each book
+    book_colors = ['#%06x' % random.randint(0, 0xFFFFFF) for _ in books]
+
+    # Zip books and book_colors together, filling missing colors with None
+    zipped_data = zip_longest(books, book_colors)
+
+    return render(request, 'registerApp/favourites.html', {'zipped_data': zipped_data})
 
 
 @login_required

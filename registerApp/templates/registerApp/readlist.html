@@ -221,28 +221,29 @@
         </script>
     <h1>Readlist</h1>
 
-    {% if books %}
-        <ul>
-            {% for book in books %}
-                <li>
+    {% if zipped_data %}
+    <ul>
+        {% for book, color in zipped_data %}
+            <li style="background-color: {{ color }}">
+                <div class="container">
+                    <h3>{{ book.title }}</h3>
+                    <p>Author: {{ book.authors }}</p>
+                    <a href="{{ book.previewLink }}" target="_blank"><img src="{{ book.thumbnail }}" alt="{{ book.title }} thumbnail"></a>
+                </div>
+                <div class="sub-con">
+                    <form method="post" action="{% url 'registerApp:remove_from_readlist' book.title %}">
+                        {% csrf_token %}
+                        <button type="submit">Remove from Readlist</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No books in the readlist.</p>
+{% endif %}
 
-                    <div class="container">
-                        <h3>{{ book.title }}</h3>
-                        <p>Author: {{ book.authors }}</p>
-                        <a href="{{ book.previewLink }}" target="_blank"><img src="{{ book.thumbnail }}" alt="{{ book.title }} thumbnail"></a>
-                    </div>
-                    <div class="sub-con">
-                        <form method="post" action="{% url 'registerApp:remove_from_readlist' book.title %}">
-                            {% csrf_token %}
-                            <button type="submit">Remove from Readlist</button>
-                        </form>
-                    </div>
-                    
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No books in the readlist.</p>
-    {% endif %}
+
+
 </body>
 </html>

@@ -274,26 +274,26 @@
         </script>
     <h1>Favourites</h1>
 
-    {% if books %}
-        <ul>
-            {% for book in books %}
-                <li>
-                    <div class="container">
-                        <h3>{{ book.title }}</h3>
-                        <p>Author: {{ book.authors }}</p>
-                        <a href="{{ book.previewLink }}" target="_blank"><img src="{{ book.thumbnail }}" alt="{{ book.title }} thumbnail"></a>
-                    </div>
-                    <div class="sub-con">
-                        <form method="post" action="{% url 'registerApp:remove_from_favourites' book.title %}">
-                            {% csrf_token %}
-                            <button type="submit">Remove from Favourites</button>
-                        </form>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No books in the favourites.</p>
-    {% endif %}
+    {% if zipped_data %}
+    <ul>
+        {% for book, color in zipped_data %}
+            <li style="background-color: {{ color }}">
+                <div class="container">
+                    <h3>{{ book.title }}</h3>
+                    <p>Author: {{ book.authors }}</p>
+                    <a href="{{ book.previewLink }}" target="_blank"><img src="{{ book.thumbnail }}" alt="{{ book.title }} thumbnail"></a>
+                </div>
+                <div class="sub-con">
+                    <form method="post" action="{% url 'registerApp:remove_from_favourites' book.title %}">
+                        {% csrf_token %}
+                        <button type="submit">Remove from Favourites</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No books in the favourites.</p>
+{% endif %}
 </body>
 </html>

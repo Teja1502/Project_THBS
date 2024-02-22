@@ -11,7 +11,7 @@ const getBooks = async (book) => {
 };
 
 const extractThumbnail = ({ imageLinks }) => {
-  const DEFAULT_THUMBNAIL = "./static/registerApp/images/book_img.png";
+  const DEFAULT_THUMBNAIL = "http://books.google.com/books/content?id=Rj0LAAAAIAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api";
   if (!imageLinks || !imageLinks.thumbnail) {
     return DEFAULT_THUMBNAIL;
   }
